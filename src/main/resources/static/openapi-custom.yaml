@@ -1,0 +1,1113 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  description: API of the "School" task
+  contact:
+    name: Zhadaev Alexander
+    url: www.zhadaev.ru
+    email: zhadaevs@yandex.ru
+  version: 1.0-SNAPSHOT
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/students/{id}:
+    summary: Represents a student
+    description: >
+      This resource represents an individual student in the system.
+      Each student is identified by a numeric `id`.
+    get:
+      summary: Get a student by id
+      description: >
+        This method allows you to get a school student by its id.
+      tags:
+        - student-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The student id
+          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+              example:
+                id: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+                firstName: Mia
+                lastName: Phillips
+                group:
+                  id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                  name: YT-80
+                courses:
+                  - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                    name: Computer science
+                    description: Subject Computer science
+                  - id: cea9af46-4727-4822-8f06-807efe886f42
+                    name: Economics
+                    description: Subject Economics
+        '404':
+          description: Student not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Student not found by id
+    put:
+      summary: Edit a student
+      description: >
+        This method updates the student with the specified id. The values of the student properties are replaced with the values from the request body. Unspecified values are replaced with default values.
+      tags:
+        - student-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The student id
+          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+      requestBody:
+        description: >
+          You must specify the student properties. For the group and courses, it is enough to fill in only the id.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDto'
+            examples:
+              All properties are filled in:
+                value:
+                  firstName: Mia
+                  lastName: Phillips
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                  courses:
+                  - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                  - id: cea9af46-4727-4822-8f06-807efe886f42
+              Not all properties are filled in:
+                value:
+                  firstName: Mia
+                  lastName: Phillips
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+              examples:
+                All properties are filled in:
+                  value:
+                    id: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+                    firstName: Mia
+                    lastName: Phillips
+                    group:
+                      id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                      name: null
+                    courses:
+                    - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                      name: null
+                      description: null
+                    - id: cea9af46-4727-4822-8f06-807efe886f42
+                      name: null
+                      description: null
+                Not all properties are filled in:
+                  value:
+                    id: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+                    firstName: Mia
+                    lastName: Phillips
+                    group:
+                      id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                      name: null
+                    courses: null
+        '404':
+          description: Student replace error. Student not found by id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Student replace error. Student not found by id
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.studentDto.lastName
+                        invalidValue: "  "
+                      - message: The student's first name must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.studentDto.firstName
+                        invalidValue: "  "
+                Less than two characters:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must consist of at least two characters
+                        propertyPath: studentDto
+                        invalidValue: B
+                      - message: The student's first name must consist of at least two characters
+                        propertyPath: studentDto
+                        invalidValue: A
+    delete:
+      summary: Delete a student
+      description: >
+        This method removes the student with the specified id.
+      tags:
+        - student-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The student id
+          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Student delete error. Student not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Student delete error. Student not found by id
+    patch:
+      summary: Edit a student
+      description: >
+        This method updates the student with the specified id. The values of the student properties are replaced with the values from the request body. Unspecified values are not changed.
+      tags:
+        - student-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The student id
+          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+      requestBody:
+        description: >
+          You must specify the student parameters. For the group and courses, it is enough to fill in only the id.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDto'
+            example:
+              courses:
+                - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                - id: cea9af46-4727-4822-8f06-807efe886f42
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+              example:
+                id: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+                firstName: Mia
+                lastName: Phillips
+                group:
+                  id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                  name: YT-80
+                courses:
+                  - id: cea9af46-4727-4822-8f06-807efe886f42
+                    name: null
+                    description: null
+                  - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                    name: null
+                    description: null
+        '404':
+          description: Student update error. Student not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Student update error. Student not found by id
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces or null:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must contain at least one non-whitespace character. Can be null
+                        propertyPath: update.studentDto.lastName
+                        invalidValue: "  "
+                      - message: The student's first name must contain at least one non-whitespace character. Can be null
+                        propertyPath: update.studentDto.firstName
+                        invalidValue: "  "
+                Less than two characters:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must consist of at least two characters
+                        propertyPath: update.studentDto.lastName
+                        invalidValue: B
+                      - message: The student's first name must consist of at least two characters
+                        propertyPath: studentDto
+                        invalidValue: A
+  /api/groups/{id}:
+    summary: Represents a group
+    description: >
+      This resource represents an individual group in the system.
+      Each group is identified by a numeric `id`.
+    get:
+      summary: Get a group by id
+      description: >
+        This method allows you to get a school group by its id.
+      tags:
+        - group-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The group id
+          example: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+              example:
+                id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                name: YT-80
+        '404':
+          description: Group not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Group not found by id
+    put:
+      summary: Edit a group
+      description: >
+        This method updates the group with the specified id. The values of the group properties are replaced with the values from the request body. Unspecified values are replaced with default values.
+      tags:
+        - group-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The group id
+          example: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+      requestBody:
+        description: >
+          You must specify the group parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupDto'
+            example:
+              name: YT-80
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+              example:
+                id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                name: YT-80
+        '404':
+          description: Group replace error. Group not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Group replace error. Group not found by id
+        '400':
+          description: >
+            Validation error. The group name must not be null and must contain at least one non-whitespace character.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T19:07:45.652+00:0"
+                status: Bad Request
+                violations:
+                  - message: The group name must not be null and must contain at least one non-whitespace character
+                    propertyPath: groupDto
+                    invalidValue: "  "
+    delete:
+      summary: Delete a group
+      description: >
+        This method removes the group with the specified id.
+      tags:
+        - group-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The group id
+          example: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Group delete error. Group not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Group delete error. Group not found by id
+    patch:
+      summary: Edit a group
+      description: >
+        This method updates the group with the specified id. The values of the group properties are replaced with the values from the request body. Unspecified values are not changed.
+      tags:
+        - group-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The group id
+          example: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+      requestBody:
+        description: >
+          You must specify the group parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupDto'
+            example:
+              name: YT-80
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+              example:
+                id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                name: YT-80
+        '404':
+          description: Group update error. Group not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Group update error. Group not found by id
+        '400':
+          description: >
+            Validation error. The group name must not be null and must contain at least one non-whitespace character.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T19:07:45.652+00:0"
+                status: Bad Request
+                violations:
+                  - message: The group name must not be null and must contain at least one non-whitespace character
+                    propertyPath: groupDto
+                    invalidValue: "  "
+  /api/courses/{id}:
+    summary: Represents a course
+    description: >
+      This resource represents an individual course in the system.
+      Each course is identified by a numeric `id`.
+    get:
+      summary: Get a course by id
+      description: >
+        This method allows you to get a school course by its id.
+      tags:
+        - course-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The course id
+          example: 1a94740f-cab8-4522-91fa-ad996c72b92d
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+              example: 
+                name: Computer science
+                description: Subject Computer science
+        '404':
+          description: Course not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Course not found by id
+    put:
+      summary: Edit a course
+      description: >
+        This method updates the course with the specified id. The values of the course properties are replaced with the values from the request body. Unspecified values are replaced with default values.
+      tags:
+        - course-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The course id
+          example: 1a94740f-cab8-4522-91fa-ad996c72b92d
+      requestBody:
+        description: >
+          You must specify the course parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+            examples:
+              All properties are filled in:
+                value:
+                  name: Computer science
+                  description: Subject Computer science
+              Not all properties are filled in:
+                value:
+                  description: Subject Computer science
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+              examples:
+                All properties are filled in:
+                  value:
+                    id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                    name: Computer science
+                    description: Subject Computer science
+                Not all properties are filled in:
+                  value:
+                    id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                    name: null
+                    description: Subject Computer science
+        '404':
+          description: Course replace error. Course not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Course replace error. Course not found by id
+        '400':
+          description: >
+            The course name must not be null and must contain at least one non-whitespace character.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T20:05:27.674+00:00"
+                status: Bad Request
+                violations:
+                  - message: The course name must not be null and must contain at least one non-whitespace character
+                    propertyPath: replace.courseDto.name
+                    invalidValue: "  "
+    delete:
+      summary: Delete a course
+      description: >
+        This method removes the course with the specified id.
+      tags:
+        - course-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The course id
+          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Course delete error. Course not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Course delete error. Course not found by id
+    patch:
+      summary: Edit a course
+      description: >
+        This method updates the course with the specified id. The values of the course properties are replaced with the values from the request body. Unspecified values are not changed.
+      tags:
+        - course-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The course id
+          example: cea9af46-4727-4822-8f06-807efe886f42
+      requestBody:
+        description: >
+          You must specify the course parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+            example: 
+              description: Subject Computer science
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+              example:
+                id: cea9af46-4727-4822-8f06-807efe886f42
+                name: Economics
+                description: Subject Economics
+        '404':
+          description: Course update error. Course not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Course update error. Course not found by id
+        '400':
+          description: >
+            Validation error. The course name must contain at least one non-whitespace character. Can be null.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T20:05:27.674+00:00"
+                status: Bad Request
+                violations:
+                  - message: The course name must contain at least one non-whitespace character. Can be null
+                    propertyPath: update.courseDto.name
+                    invalidValue: "  "
+  /api/students:
+    summary: Represents a students
+    description: >
+      This resource represents an all students in the system.
+    get:
+      summary: Get all students
+      description: >
+        This method allows you to get a list of all school students. If the filter parameter is set, the method returns a list of filtered students.
+      tags:
+        - student-controller
+      parameters:
+        - name: courseId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: ID of the course the students are studying at.
+          example: 1a94740f-cab8-4522-91fa-ad996c72b92d
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+          description: Page number, size, sorting
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDto'
+              example:
+                - id: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+                  firstName: Mia
+                  lastName: Phillips
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                    name: YT-80
+                  courses:
+                    - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                      name: Computer science
+                      description: Subject Computer science
+                    - id: cea9af46-4727-4822-8f06-807efe886f42
+                      name: Economics
+                      description: Subject Economics
+                - id: 821a15ed-2e3c-4f32-a0b7-4e52d81b550f
+                  firstName: Jessica
+                  lastName: Anderson
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                    name: YT-80
+                  courses:
+                    - id: acffffde-c76d-4618-9a32-2e79d5cd087e
+                      name: Music
+                      description: Subject Music
+                    - id: 51d5f402-7150-4bab-af7c-816bdba735f5
+                      name: Astronomy
+                      description: Subject Astronomy
+                    - id: 99c44d20-1056-49a7-a3a4-2e86cf4e0688
+                      name: Botany
+                      description: Subject Botany
+    post:
+      summary: Add a new student
+      description: >
+        This method adds a new student to the school.
+      tags:
+        - student-controller
+      requestBody:
+        description: >
+          You must specify the student parameters. For the group and courses, it is enough to fill in only the id.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDto'
+            examples:
+              All properties are filled in:
+                value:
+                  firstName: Mia
+                  lastName: Phillips
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                  courses:
+                  - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                  - id: cea9af46-4727-4822-8f06-807efe886f42
+              Not all properties are filled in:
+                value:
+                  firstName: Mia
+                  lastName: Phillips
+                  group:
+                    id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+            
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+              examples:
+                All properties are filled in:
+                  value:
+                    id: d62bf582-59a2-4c07-8149-dd26ffa12af3
+                    firstName: Mia
+                    lastName: Phillips
+                    group:
+                      id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                      name: null
+                    courses:
+                    - id: 1a94740f-cab8-4522-91fa-ad996c72b92d
+                      name: null
+                      description: null
+                    - id: cea9af46-4727-4822-8f06-807efe886f42
+                      name: null
+                      description: null
+                Not all properties are filled in:
+                  value:
+                    id: d62bf582-59a2-4c07-8149-dd26ffa12af3
+                    firstName: Mia
+                    lastName: Phillips
+                    group:
+                      id: 46fa82ce-4e6d-45ae-a4e4-914971f1eb4f
+                      name: null
+                    courses: null
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must not be null and must contain at least one non-whitespace character
+                        propertyPath: save.studentDto.lastName
+                        invalidValue: "  "
+                      - message: The student's first name must not be null and must contain at least one non-whitespace character
+                        propertyPath: save.studentDto.firstName
+                        invalidValue: "  "
+                Less than two characters:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The student's last name must consist of at least two characters
+                        propertyPath: studentDto
+                        invalidValue: B
+                      - message: The student's first name must consist of at least two characters
+                        propertyPath: studentDto
+                        invalidValue: A
+    delete:
+      summary: Delete all students
+      description: >
+        This method removes all students.
+      tags:
+        - student-controller
+      responses:
+        '200':
+          description: Successful operation
+  /api/groups:
+    summary: Represents a groups
+    description: >
+      This resource represents an all groups in the system.
+    get:
+      summary: Get all groups
+      description: >
+        This method allows you to get a list of all school groups. If the filter parameter is set, the method returns a list of filtered groups. In this case, the method returns groups in which the number of students is less than or equal to the specified.
+      tags:
+        - group-controller
+      parameters:
+        - name: numberStudents
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+          description: Number of students
+          example: 15
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+          description: Page number, size, sorting
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupDto'
+              example:
+                - id: 408a9358-c6b1-4b36-8912-7bbd4803f1b1
+                  name: BA-51
+                - id: d73d111e-7159-48e5-9247-e050db9e0437
+                  name: OU-60
+                - id: 10562d54-0acc-4fbf-baba-98c0aa77a900
+                  name: SV-51
+        '400':
+          description: >
+            Validation error. The number of students must be greater than or equal to zero.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T19:07:45.652+00:0"
+                status: Bad Request
+                violations:
+                  - message: The number of students must be greater than or equal to zero
+                    propertyPath: findAll.numberStudents
+                    invalidValue: -2
+    post:
+      summary: Add a new group
+      description: >
+        This method adds a new group to the school.
+      tags:
+        - group-controller
+      requestBody:
+        description: >
+          You must specify the group parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupDto'
+            example:
+              name: SV-51
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+              example:
+                id: c20bf536-996e-45cb-8f8d-b57f7b9a5998
+                name: SV-51
+        '400':
+          description: >
+            Validation error. The group name must not be null and must contain at least one non-whitespace character.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T19:07:45.652+00:0"
+                status: Bad Request
+                violations:
+                  - message: The group name must not be null and must contain at least one non-whitespace character
+                    propertyPath: groupDto
+                    invalidValue: "  "
+    delete:
+      summary: Delete all groups
+      description: >
+        This method removes all groups.
+      tags:
+        - group-controller
+      responses:
+        '200':
+          description: Successful operation
+  /api/courses:
+    summary: Represents a courses
+    description: >
+      This resource represents an all courses in the system.
+    get:
+      summary: Get all courses
+      description: >
+        This method allows you to get a list of all school courses.
+      tags:
+        - course-controller
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+          description: Page number, size, sorting
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseDto'
+              example:
+                - id: 1565f8d4-35bb-4c48-9045-c91acdb753ec
+                  name: Chemistry
+                  description:  Subject Chemistry
+                - id: df5b330d-5f6a-4223-8d0b-b71f45636b9f
+                  name: Literature
+                  directional:  Subject Literature
+                - id: acffffde-c76d-4618-9a32-2e79d5cd087e
+                  name: Music
+                  directional: Subject Music
+    post:
+      summary: Add a new course
+      description: >
+        This method adds a new course to the school.
+      tags:
+        - course-controller
+      requestBody:
+        description: >
+          You must specify the course parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+            example:
+              name: Chemistry
+              description:  Subject Chemistry
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+              example:
+                id: 7a46abc6-d100-40f1-a16f-a1a0ea18f630
+                name: Chemistry
+                description:  Subject Chemistry
+        '400':
+          description: >
+            Validation error. The course name must not be null and must contain at least one non-whitespace character
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T20:05:27.674+00:00"
+                status: Bad Request
+                violations:
+                  - message: The course name must not be null and must contain at least one non-whitespace character
+                    propertyPath: save.courseDto.name
+                    invalidValue: "  "
+    delete:
+      summary: Delete all courses
+      description: >
+        This method removes all courses.
+      tags:
+        - course-controller
+      responses:
+        '200':
+          description: Successful operation
+components:
+  schemas:
+    StudentDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        group:
+          $ref: '#/components/schemas/GroupDto'
+        firstName:
+          type: string
+          minLength: 2
+        lastName:
+          type: string
+          minLength: 2
+        courses:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseDto'
+    GroupDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    CourseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    CustomError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    Violation:
+      type: object
+      properties:
+        message:
+          type: string
+        propertyPath:
+          type: string
+        invalidValue:
+          type: object
+    ValidationError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: string
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Violation'
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
