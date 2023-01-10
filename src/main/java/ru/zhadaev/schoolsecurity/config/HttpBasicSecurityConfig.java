@@ -11,14 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.zhadaev.schoolsecurity.security.CustomBasicAuthenticationEntryPoint;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class HttpBasicSecurityConfig {
-
-    private final CustomBasicAuthenticationEntryPoint entryPoint;
 
     @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
@@ -40,8 +36,7 @@ public class HttpBasicSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic()
-                .authenticationEntryPoint(entryPoint);
+                .httpBasic();
         return http.build();
     }
 
