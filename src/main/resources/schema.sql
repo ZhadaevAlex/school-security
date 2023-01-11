@@ -14,6 +14,8 @@ drop sequence if exists school.courses_course_id_sequence;
 
 drop sequence if exists school.students_student_id_sequence;
 
+drop table if exists school.users;
+
 create table if not exists school.groups
 (
     group_id   uuid primary key,
@@ -43,5 +45,12 @@ create table if not exists school.students_courses
     foreign key (student_id) references school.students (student_id) on delete set null,
     foreign key (course_id) references school.courses (course_id) on delete set null,
     unique (student_id, course_id)
+);
+
+create table if not exists school.users
+(
+    id          uuid primary key,
+    username    varchar(255) null,
+    password    varchar(255) null
 );
 

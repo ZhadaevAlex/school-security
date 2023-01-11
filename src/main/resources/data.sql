@@ -1,4 +1,4 @@
--- -- [ GROUPS ]
+-- [ GROUPS ]
 INSERT INTO school.groups (group_id, group_name) VALUES ('46fa82ce-4e6d-45ae-a4e4-914971f1eb4f', 'YT-80');
 INSERT INTO school.groups (group_id, group_name) VALUES ('408a9358-c6b1-4b36-8912-7bbd4803f1b1', 'BA-51');
 INSERT INTO school.groups (group_id, group_name) VALUES ('d73d111e-7159-48e5-9247-e050db9e0437', 'OU-60');
@@ -9,7 +9,7 @@ INSERT INTO school.groups (group_id, group_name) VALUES ('6fa657c1-e8e6-405c-94d
 INSERT INTO school.groups (group_id, group_name) VALUES ('e55a0b30-cb32-4b4e-87a3-51163b920a19', 'LU-80');
 INSERT INTO school.groups (group_id, group_name) VALUES ('8e2e1511-8105-441f-97e8-5bce88c0267a', 'UZ-48');
 INSERT INTO school.groups (group_id, group_name) VALUES ('0cbb0226-1ae7-4c93-8bd9-e49766ead6a4', 'BG-24');
---
+
 -- [ COURSES ]
 INSERT INTO school.courses (course_id, course_name, course_description) VALUES ('1a94740f-cab8-4522-91fa-ad996c72b92d', 'Computer science', 'Subject Computer science');
 INSERT INTO school.courses (course_id, course_name, course_description) VALUES ('cea9af46-4727-4822-8f06-807efe886f42', 'Economics', 'Subject Economics');
@@ -21,8 +21,8 @@ INSERT INTO school.courses (course_id, course_name, course_description) VALUES (
 INSERT INTO school.courses (course_id, course_name, course_description) VALUES ('9edbc2f6-15a6-4529-a298-379ea64fef12', 'Math', 'Subject Math');
 INSERT INTO school.courses (course_id, course_name, course_description) VALUES ('c4b891c8-d3bb-4ac2-8a9b-aa4644230160', 'History', 'Subject History');
 INSERT INTO school.courses (course_id, course_name, course_description) VALUES ('51d5f402-7150-4bab-af7c-816bdba735f5', 'Astronomy', 'Subject Astronomy');
---
--- -- [ STUDENTS ]
+
+-- [ STUDENTS ]
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('a46e9a8e-f535-4437-8bbf-c3a7216e74e5', 'Mia', 'Phillips', '46fa82ce-4e6d-45ae-a4e4-914971f1eb4f');
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('821a15ed-2e3c-4f32-a0b7-4e52d81b550f', 'Jessica', 'Anderson', '46fa82ce-4e6d-45ae-a4e4-914971f1eb4f');
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('b0d48471-179e-4ac8-b0f2-741e3eededbd', 'George', 'Morgan', '46fa82ce-4e6d-45ae-a4e4-914971f1eb4f');
@@ -223,8 +223,8 @@ INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('8d484aa1-b8ed-495f-ac64-49a34287d1d8', 'Jacob', 'Baker', null);
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('28bd5a3f-66c9-484b-a400-157e665d492b', 'Oliver', 'Green', null);
 INSERT INTO school.students (student_id, first_name, last_name, group_id) VALUES ('46702db5-622d-44d7-a109-d4e8be356079', 'Lily', 'Phillips', null);
---
--- -- [ STUDENTS  <- TO ->  COURSES ]
+
+-- [ STUDENTS  <- TO ->  COURSES ]
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('a46e9a8e-f535-4437-8bbf-c3a7216e74e5', 'd6d50d2f-d3e7-4b74-aff6-4429fcdb51f5');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('a46e9a8e-f535-4437-8bbf-c3a7216e74e5', 'cea9af46-4727-4822-8f06-807efe886f42');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('a46e9a8e-f535-4437-8bbf-c3a7216e74e5', '1a94740f-cab8-4522-91fa-ad996c72b92d');
@@ -622,3 +622,7 @@ INSERT INTO school.students_courses (student_id, course_id) VALUES ('8d484aa1-b8
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66c9-484b-a400-157e665d492b', 'c4b891c8-d3bb-4ac2-8a9b-aa4644230160');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66c9-484b-a400-157e665d492b', 'd6d50d2f-d3e7-4b74-aff6-4429fcdb51f5');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('46702db5-622d-44d7-a109-d4e8be356079', '99c44d20-1056-49a7-a3a4-2e86cf4e0688');
+
+-- [ USERS ]
+INSERT INTO school.users (id, username, password) VALUES ('50595822-91e2-11ed-a1eb-0242ac120002', 'sasha', '$2a$12$ivaxoaTAr0uVruN42dLE/ujinDOENIViVJnJQs9q0spikzsim/8Ny');
+
