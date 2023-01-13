@@ -624,5 +624,5 @@ INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('46702db5-622d-44d7-a109-d4e8be356079', '99c44d20-1056-49a7-a3a4-2e86cf4e0688');
 
 -- [ USERS ]
-INSERT INTO school.users (id, username, password) VALUES ('50595822-91e2-11ed-a1eb-0242ac120002', 'sasha', '$2a$12$ivaxoaTAr0uVruN42dLE/ujinDOENIViVJnJQs9q0spikzsim/8Ny');
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('50595822-91e2-11ed-a1eb-0242ac120002', 'userLogin', '$2a$12$ivaxoaTAr0uVruN42dLE/ujinDOENIViVJnJQs9q0spikzsim/8Ny');
 
