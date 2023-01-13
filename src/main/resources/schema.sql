@@ -49,8 +49,8 @@ create table if not exists school.students_courses
 
 create table if not exists school.users
 (
-    id          uuid primary key,
-    username    varchar(255) null,
-    password    varchar(255) null
+    user_id          uuid primary key,
+    user_username    varchar(255) null,
+    user_password    varchar(255) null
 );
 

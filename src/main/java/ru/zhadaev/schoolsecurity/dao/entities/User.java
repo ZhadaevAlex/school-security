@@ -12,13 +12,13 @@ public class User {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    @Column(name = "id")
+    @Column(name = "user_id")
     private UUID id;
 
-//    @Column(name = "username")
+    @Column(name = "user_username")
     private String username;
 
-//    @Column(name = "password")
+    @Column(name = "user_password")
     private String password;
 }
 
