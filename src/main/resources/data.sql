@@ -623,6 +623,12 @@ INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66c9-484b-a400-157e665d492b', 'd6d50d2f-d3e7-4b74-aff6-4429fcdb51f5');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('46702db5-622d-44d7-a109-d4e8be356079', '99c44d20-1056-49a7-a3a4-2e86cf4e0688');
 
--- [ USERS ]
-INSERT INTO school.users (user_id, user_username, user_password) VALUES ('50595822-91e2-11ed-a1eb-0242ac120002', 'userLogin', '$2a$12$ivaxoaTAr0uVruN42dLE/ujinDOENIViVJnJQs9q0spikzsim/8Ny');
+-- FOR TEST BY POSTMAN
+-- [ ROLES ]
+INSERT INTO school.roles (role_id, role_name) VALUES ('41b983b6-088d-4543-b554-9c8abe65e3fc', 'ROLE_TEST');
 
+-- [ USERS ]
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'TEST_USER', 'TEST_USER_PASS');
+
+-- [ USERS  <- TO ->  ROLES ]
+INSERT INTO school.users_roles (user_id, role_id) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', '41b983b6-088d-4543-b554-9c8abe65e3fc');

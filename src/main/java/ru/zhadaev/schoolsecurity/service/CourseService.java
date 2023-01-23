@@ -2,6 +2,7 @@ package ru.zhadaev.schoolsecurity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.CourseDto;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER"})
 public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseMapper mapper;
@@ -42,12 +44,14 @@ public class CourseService {
         return mapper.toDto(course);
     }
 
+    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public CourseDto findById(UUID id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Course not found by id"));
         return mapper.toDto(course);
     }
 
+    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public List<CourseDto> findAll(Pageable pageable) {
         List<Course> courses = courseRepository.findAll(pageable).toList();
         return mapper.toDto(courses);

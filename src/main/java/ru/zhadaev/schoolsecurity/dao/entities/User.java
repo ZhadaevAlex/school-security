@@ -3,6 +3,7 @@ package ru.zhadaev.schoolsecurity.dao.entities;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @Data
@@ -20,5 +21,11 @@ public class User {
 
     @Column(name = "user_password")
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(schema = "school", name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    Collection<Role> roles;
 }
 

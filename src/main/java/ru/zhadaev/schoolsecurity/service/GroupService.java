@@ -2,6 +2,7 @@ package ru.zhadaev.schoolsecurity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.GroupDto;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER"})
 public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper mapper;
@@ -42,12 +44,14 @@ public class GroupService {
         return mapper.toDto(group);
     }
 
+    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public GroupDto findById(UUID id) {
         Group group = groupRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Group not found by id"));
         return mapper.toDto(group);
     }
 
+    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public List<GroupDto> findAll(Integer numberStudents, Pageable pageable) {
         List<Group> groups = (numberStudents == null) ?
                 groupRepository.findAll(pageable).toList()

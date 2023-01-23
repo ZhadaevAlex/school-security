@@ -47,7 +47,7 @@ public class HttpBasicSecurityConfig {
                 .httpBasic()
                 .and()
                 .rememberMe()
-                .key("key")
+                .key("super-secret-key")
                 .alwaysRemember(true)
                 .tokenValiditySeconds(tokenValiditySeconds);
         return http.build();
