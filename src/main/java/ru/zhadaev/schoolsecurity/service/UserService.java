@@ -3,6 +3,7 @@ package ru.zhadaev.schoolsecurity.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.UserDto;
@@ -21,35 +22,41 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDto save(UserDto userDto) {
         User user = mapper.toEntity(userDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User saved = userRepository.save(user);
-        UUID id = saved.getId();
         return mapper.toDto(saved);
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
     public UserDto replace(UserDto userDto, UUID id) {
-        if (!existsById(id)) throw new NotFoundException("Group replace error. Group not found by id");
+        if (!this.existsById(id)) {
+            throw new NotFoundException(String.format("User replace error. User not found by id = %s", id));
+        }
         User user = mapper.toEntity(userDto);
         user.setId(id);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User replaced = userRepository.save(user);
         return mapper.toDto(replaced);
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
     public UserDto update(UserDto userDto, UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User update error. User not found by id"));
+        UserDto found = this.findById(id);
+        User user = mapper.toEntity(found);
         mapper.update(userDto, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
         return mapper.toDto(user);
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found by id"));
+                .orElseThrow(() -> new NotFoundException(String.format("User not found by id = %s", id)));
         return mapper.toDto(user);
     }
 
@@ -71,7 +78,7 @@ public class UserService {
         if (existsById(id)) {
             userRepository.deleteById(id);
         } else {
-            throw new NotFoundException("User delete error. User not found by id");
+            throw new NotFoundException(String.format("User delete error. User not found by id = %s", id));
         }
     }
 

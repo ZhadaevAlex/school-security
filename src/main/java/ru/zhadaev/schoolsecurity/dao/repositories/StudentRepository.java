@@ -15,11 +15,10 @@ import java.util.UUID;
 public interface StudentRepository extends PagingAndSortingRepository<Student, UUID> {
 
     @EntityGraph(value = "student-entity-graph")
-    @Query("select student from Student student left join student.courses course where course.id = ?1")
-    List<Student> findStudentsByCourseId(UUID courseId, Pageable pageable);
+    @Query("select s from Student s join Course c on c.id =:courseId where c member of s.courses")
+    List<Student> findByCourseId(UUID courseId, Pageable pageable);
 
     @Override
     @EntityGraph(value = "student-entity-graph")
     Page<Student> findAll(Pageable pageable);
 }
-

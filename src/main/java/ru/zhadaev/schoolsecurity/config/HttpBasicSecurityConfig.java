@@ -2,6 +2,7 @@ package ru.zhadaev.schoolsecurity.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,12 +36,23 @@ public class HttpBasicSecurityConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "logging.level", name = "ru.zhadaev.schoolsecurity", havingValue = "debug")
+    public HttpRequestHeadersLoggingFilter getFilter(HttpSecurity httpSecurity) {
+        HttpRequestHeadersLoggingFilter filter = new HttpRequestHeadersLoggingFilter();
+        httpSecurity.addFilterBefore(filter, SecurityContextPersistenceFilter.class);
+        return filter;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(new HttpRequestHeadersLoggingFilter(), SecurityContextPersistenceFilter.class)
                 .csrf()
                 .disable()
+                .formLogin()
+                .disable()
                 .authorizeHttpRequests()
+                .antMatchers("/api-docs/**", "/swagger-ui/**", "/openapi-custom.yaml")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

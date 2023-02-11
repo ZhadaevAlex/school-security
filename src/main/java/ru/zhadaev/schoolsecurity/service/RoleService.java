@@ -10,9 +10,9 @@ import ru.zhadaev.schoolsecurity.api.errors.NotFoundException;
 import ru.zhadaev.schoolsecurity.api.mappers.RoleMapper;
 import ru.zhadaev.schoolsecurity.dao.entities.Role;
 import ru.zhadaev.schoolsecurity.dao.repositories.RoleRepository;
+import ru.zhadaev.schoolsecurity.enums.RoleName;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,28 +25,12 @@ public class RoleService {
     public RoleDto save(RoleDto roleDto) {
         Role role = mapper.toEntity(roleDto);
         Role saved = roleRepository.save(role);
-        UUID id = saved.getId();
         return mapper.toDto(saved);
     }
 
-    public RoleDto replace(RoleDto roleDto, UUID id) {
-        if (!existsById(id)) throw new NotFoundException("Group replace error. Group not found by id");
-        Role role = mapper.toEntity(roleDto);
-        role.setId(id);
-        Role replaced = roleRepository.save(role);
-        return mapper.toDto(replaced);
-    }
-
-    public RoleDto update(RoleDto roleDto, UUID id) {
+    public RoleDto findById(RoleName id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Role update error. Role not found by id"));
-        mapper.update(roleDto, role);
-        return mapper.toDto(role);
-    }
-
-    public RoleDto findById(UUID id) {
-        Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Role not found by id"));
+                .orElseThrow(() -> new NotFoundException(String.format("Role not found by id = %s", id)));
         return mapper.toDto(role);
     }
 
@@ -55,7 +39,7 @@ public class RoleService {
         return mapper.toDto(roles);
     }
 
-    public boolean existsById(UUID id) {
+    public boolean existsById(RoleName id) {
         return roleRepository.existsById(id);
     }
 
@@ -63,11 +47,11 @@ public class RoleService {
         return roleRepository.count();
     }
 
-    public void deleteById(UUID id) {
+    public void deleteById(RoleName id) {
         if (existsById(id)) {
             roleRepository.deleteById(id);
         } else {
-            throw new NotFoundException("Role delete error. Role not found by id");
+            throw new NotFoundException(String.format("Role delete error. Role not found by id = %s", id));
         }
     }
 

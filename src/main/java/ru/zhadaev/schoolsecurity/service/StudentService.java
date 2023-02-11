@@ -29,7 +29,9 @@ public class StudentService {
     }
 
     public StudentDto replace(StudentDto studentDto, UUID id) {
-        if (!existsById(id)) throw new NotFoundException("Student replace error. Student not found by id");
+        if (!existsById(id)) {
+            throw new NotFoundException(String.format("Student replace error. Student not found by id = %s", id));
+        }
         Student student = mapper.toEntity(studentDto);
         student.setId(id);
         Student replaced = studentRepository.save(student);
@@ -37,16 +39,17 @@ public class StudentService {
     }
 
     public StudentDto update(StudentDto studentDto, UUID id) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Student update error. Student not found by id"));
+        StudentDto found = this.findById(id);
+        Student student = mapper.toEntity(found);
         mapper.update(studentDto, student);
+        studentRepository.save(student);
         return mapper.toDto(student);
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public StudentDto findById(UUID id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Student not found by id"));
+                .orElseThrow(() -> new NotFoundException(String.format("Student not found by id = %s", id)));
         return mapper.toDto(student);
     }
 
@@ -54,7 +57,7 @@ public class StudentService {
     public List<StudentDto> findAll(UUID courseId, Pageable pageable) {
         List<Student> students = (courseId == null) ?
                 studentRepository.findAll(pageable).toList()
-                : studentRepository.findStudentsByCourseId(courseId, pageable);
+                : studentRepository.findByCourseId(courseId, pageable);
         return mapper.toDto(students);
     }
 
@@ -70,7 +73,7 @@ public class StudentService {
         if (existsById(id)) {
             studentRepository.deleteById(id);
         } else {
-            throw new NotFoundException("Student delete error. Student not found by id");
+            throw new NotFoundException(String.format("Student delete error. Student not found by id = %s", id));
         }
     }
 

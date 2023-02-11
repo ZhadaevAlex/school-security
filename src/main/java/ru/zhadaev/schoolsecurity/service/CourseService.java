@@ -25,12 +25,13 @@ public class CourseService {
     public CourseDto save(CourseDto courseDto) {
         Course course = mapper.toEntity(courseDto);
         Course saved = courseRepository.save(course);
-        UUID id = saved.getId();
         return mapper.toDto(saved);
     }
 
     public CourseDto replace(CourseDto courseDto, UUID id) {
-        if (!existsById(id)) throw new NotFoundException("Group replace error. Group not found by id");
+        if (!this.existsById(id)) {
+            throw new NotFoundException(String.format("Course replace error. Course not found by id = %s", id));
+        }
         Course course = mapper.toEntity(courseDto);
         course.setId(id);
         Course replaced = courseRepository.save(course);
@@ -38,16 +39,17 @@ public class CourseService {
     }
 
     public CourseDto update(CourseDto courseDto, UUID id) {
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Course update error. Course not found by id"));
+        CourseDto found = this.findById(id);
+        Course course = mapper.toEntity(found);
         mapper.update(courseDto, course);
+        courseRepository.save(course);
         return mapper.toDto(course);
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
     public CourseDto findById(UUID id) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Course not found by id"));
+                .orElseThrow(() -> new NotFoundException(String.format("Course not found by id = %s", id)));
         return mapper.toDto(course);
     }
 
@@ -69,7 +71,7 @@ public class CourseService {
         if (existsById(id)) {
             courseRepository.deleteById(id);
         } else {
-            throw new NotFoundException("Course delete error. Course not found by id");
+            throw new NotFoundException(String.format("Course delete error. Course not found by id = %s", id));
         }
     }
 

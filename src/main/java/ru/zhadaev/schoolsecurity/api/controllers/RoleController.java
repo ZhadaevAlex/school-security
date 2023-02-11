@@ -7,11 +7,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.zhadaev.schoolsecurity.api.dto.RoleDto;
 import ru.zhadaev.schoolsecurity.api.validation.Marker;
+import ru.zhadaev.schoolsecurity.enums.RoleName;
 import ru.zhadaev.schoolsecurity.service.RoleService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,31 +33,17 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public RoleDto findById(@PathVariable("id") UUID id) {
+    public RoleDto findById(@PathVariable("id") RoleName id) {
         return roleService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") UUID id) {
+    public void deleteById(@PathVariable("id") RoleName id) {
         roleService.deleteById(id);
     }
 
     @DeleteMapping()
     public void deleteAll() {
         roleService.deleteAll();
-    }
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @Validated(Marker.OnPostPut.class)
-    public RoleDto replace(@RequestBody @Valid RoleDto roleDto, @PathVariable UUID id) {
-        return roleService.replace(roleDto, id);
-    }
-
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @Validated(Marker.OnPatch.class)
-    public RoleDto update(@RequestBody @Valid RoleDto roleDto, @PathVariable("id") UUID id) {
-        return roleService.update(roleDto, id);
     }
 }

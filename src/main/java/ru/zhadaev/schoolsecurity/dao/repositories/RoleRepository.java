@@ -3,11 +3,11 @@ package ru.zhadaev.schoolsecurity.dao.repositories;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.zhadaev.schoolsecurity.dao.entities.Role;
+import ru.zhadaev.schoolsecurity.enums.RoleName;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface RoleRepository extends PagingAndSortingRepository<Role, UUID> {
-    Optional<Role> findByName(String name);
+public interface RoleRepository extends PagingAndSortingRepository<Role, RoleName> {
+    Optional<Role> findByName(RoleName name);
 }
