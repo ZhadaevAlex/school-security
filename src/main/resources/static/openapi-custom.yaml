@@ -10,6 +10,8 @@ info:
 servers:
   - url: http://localhost:8080
     description: Generated server url
+security:
+  - basicAuth: []
 paths:
   /api/students/{id}:
     summary: Represents a student
@@ -61,7 +63,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Student not found by id
+                message: Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
     put:
       summary: Edit a student
       description: >
@@ -142,7 +144,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Student replace error. Student not found by id
+                message: Student replace error. Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: Validation error
           content:
@@ -172,6 +174,9 @@ paths:
                       - message: The student's first name must consist of at least two characters
                         propertyPath: studentDto
                         invalidValue: A
+
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a student
       description: >
@@ -199,7 +204,9 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Student delete error. Student not found by id
+                message: Student delete error. Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     patch:
       summary: Edit a student
       description: >
@@ -257,7 +264,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Student update error. Student not found by id
+                message: Student update error. Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: Validation error
           content:
@@ -287,6 +294,8 @@ paths:
                       - message: The student's first name must consist of at least two characters
                         propertyPath: studentDto
                         invalidValue: A
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /api/groups/{id}:
     summary: Represents a group
     description: >
@@ -326,7 +335,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Group not found by id
+                message: Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
     put:
       summary: Edit a group
       description: >
@@ -370,7 +379,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Group replace error. Group not found by id
+                message: Group replace error. Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: >
             Validation error. The group name must not be null and must contain at least one non-whitespace character.
@@ -385,6 +394,8 @@ paths:
                   - message: The group name must not be null and must contain at least one non-whitespace character
                     propertyPath: groupDto
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a group
       description: >
@@ -412,7 +423,9 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Group delete error. Group not found by id
+                message: Group delete error. Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     patch:
       summary: Edit a group
       description: >
@@ -456,7 +469,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Group update error. Group not found by id
+                message: Group update error. Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: >
             Validation error. The group name must not be null and must contain at least one non-whitespace character.
@@ -471,6 +484,8 @@ paths:
                   - message: The group name must not be null and must contain at least one non-whitespace character
                     propertyPath: groupDto
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /api/courses/{id}:
     summary: Represents a course
     description: >
@@ -510,7 +525,9 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Course not found by id
+                message: Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     put:
       summary: Edit a course
       description: >
@@ -569,7 +586,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Course replace error. Course not found by id
+                message: Course replace error. Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: >
             The course name must not be null and must contain at least one non-whitespace character.
@@ -584,6 +601,8 @@ paths:
                   - message: The course name must not be null and must contain at least one non-whitespace character
                     propertyPath: replace.courseDto.name
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a course
       description: >
@@ -598,7 +617,7 @@ paths:
             type: string
             format: uuid
           description: The course id
-          example: a46e9a8e-f535-4437-8bbf-c3a7216e74e5
+          example: 1a94740f-cab8-4522-91fa-ad996c72b92d
       responses:
         '200':
           description: Successful operation
@@ -611,7 +630,9 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Course delete error. Course not found by id
+                message: Course delete error. Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     patch:
       summary: Edit a course
       description: >
@@ -657,7 +678,7 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Course update error. Course not found by id
+                message: Course update error. Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '400':
           description: >
             Validation error. The course name must contain at least one non-whitespace character. Can be null.
@@ -672,6 +693,302 @@ paths:
                   - message: The course name must contain at least one non-whitespace character. Can be null
                     propertyPath: update.courseDto.name
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/roles/{id}:
+    summary: Represents a role
+    description: >
+      This resource represents an individual role in the system.
+      Each role is identified by a `id`.
+    get:
+      summary: Get a role by id
+      description: >
+        This method allows you to get a role by its id.
+      tags:
+        - role-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/RoleDto'
+          description: The role id
+          example: USER
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+              example:
+                name: USER
+        '404':
+          description: Role not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Role not found by id = WIZARD
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Delete a role
+      description: >
+        This method removes the role with the specified id.
+      tags:
+        - role-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The role id
+          example: USER
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Role delete error. Role not found by id = WIZARD
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Rold delete error. Role not found by id = WIZARD
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/users/{id}:
+    summary: Represents a user
+    description: >
+      This resource represents an individual user in the system.
+      Each user is identified by a numeric `id`.
+    get:
+      summary: Get a user by id
+      description: >
+        This method allows you to get a user by its id.
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The user id
+          example: f3f6ab13-61b4-48c0-a65b-b03363116190
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+              example:
+                id: f3f6ab13-61b4-48c0-a65b-b03363116190
+                username: user
+                password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
+                role:
+                  name: USER
+        '404':
+          description: User not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    put:
+      summary: Edit a user
+      description: >
+        This method updates the user with the specified id. The values of the user properties are replaced with the values from the request body. Unspecified values are replaced with default values.
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The user id
+          example: f3f6ab13-61b4-48c0-a65b-b03363116190
+      requestBody:
+        description: >
+          You must specify the user properties.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+            example:
+              username: user
+              password: userPass
+              role:
+                name: USER
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+              example:
+                id: f3f6ab13-61b4-48c0-a65b-b03363116190
+                username: user
+                password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
+                role:
+                  name: USER
+        '404':
+          description: User replace error. User not found by id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: User replace error. User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The user's name must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.username
+                        invalidValue: " "
+                      - message: The user's password must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.password
+                        invalidValue: " "
+                The role is null:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The role must not be null
+                        propertyPath: replace.userDto.role
+                        invalidValue: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Delete a user
+      description: >
+        This method removes the user with the specified id.
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The user id
+          example: f3f6ab13-61b4-48c0-a65b-b03363116190
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User delete error. User not found by id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: User delete error. User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    patch:
+      summary: Edit a user
+      description: >
+        This method updates the user with the specified id. The values of the user properties are replaced with the values from the request body. Unspecified values are not changed.
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The user id
+          example: f3f6ab13-61b4-48c0-a65b-b03363116190
+      requestBody:
+        description: >
+          You must specify the user parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+            example:
+              password: newPass
+              role:
+                name: SUPER_ADMIN
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+              example:
+                id: f3f6ab13-61b4-48c0-a65b-b03363116190
+                username: user
+                password: $2a$10$w25yzk43HIzZC4zGc.kLo.kuZGO1fK0YSMhGW7xLR8HJKMi5uUgfC
+                role:
+                  name: SUPER_ADMIN
+        '404':
+          description: User update error. User not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: User update error. User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The user's name must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.username
+                        invalidValue: " "
+                      - message: The user's password must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.password
+                        invalidValue: " "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /api/students:
     summary: Represents a students
     description: >
@@ -697,6 +1014,11 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
           description: Page number, size, sorting
+          example:
+            page: 0
+            size: 3
+            sort:
+              - firstName,desc
       responses:
         '200':
           description: Successful operation
@@ -828,6 +1150,8 @@ paths:
                       - message: The student's first name must consist of at least two characters
                         propertyPath: studentDto
                         invalidValue: A
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete all students
       description: >
@@ -837,6 +1161,8 @@ paths:
       responses:
         '200':
           description: Successful operation
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /api/groups:
     summary: Represents a groups
     description: >
@@ -863,6 +1189,11 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
           description: Page number, size, sorting
+          example:
+            page: 0
+            size: 3
+            sort:
+              - name,desc
       responses:
         '200':
           description: Successful operation
@@ -932,6 +1263,8 @@ paths:
                   - message: The group name must not be null and must contain at least one non-whitespace character
                     propertyPath: groupDto
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete all groups
       description: >
@@ -941,6 +1274,8 @@ paths:
       responses:
         '200':
           description: Successful operation
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /api/courses:
     summary: Represents a courses
     description: >
@@ -958,6 +1293,11 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
           description: Page number, size, sorting
+          example:
+            page: 0
+            size: 3
+            sort:
+              - name,desc
       responses:
         '200':
           description: Successful operation
@@ -1019,6 +1359,8 @@ paths:
                   - message: The course name must not be null and must contain at least one non-whitespace character
                     propertyPath: save.courseDto.name
                     invalidValue: "  "
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete all courses
       description: >
@@ -1028,8 +1370,217 @@ paths:
       responses:
         '200':
           description: Successful operation
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/roles:
+    summary: Represents a roles
+    description: >
+      This resource represents an all roles in the system.
+    get:
+      summary: Get all roles
+      description: >
+        This method allows you to get a list of all roles. If the filter parameter is set, the method returns a list of filtered roles.
+      tags:
+        - role-controller
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+          description: Page number, size, sorting
+          example:
+            page: 0
+            size: 3
+            sort:
+              - name,desc
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDto'
+              example:
+                - name: USER
+                - name: TEACHER
+                - name: ADMIN
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      summary: Add a new role
+      description: >
+        This method adds a new role.
+      tags:
+        - role-controller
+      requestBody:
+        description: >
+          You must specify the role parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDto'
+            example:
+              name: ADMIN
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+              example:
+                name: ADMIN
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Delete all roles
+      description: >
+        This method removes all roles.
+      tags:
+        - role-controller
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/users:
+    summary: Represents a users
+    description: >
+      This resource represents an all users in the system.
+    get:
+      summary: Get all users
+      description: >
+        This method allows you to get a list of all users.
+      tags:
+        - user-controller
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+          description: Page number, size, sorting
+          example:
+            page: 0
+            size: 3
+            sort:
+              - username,asc
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
+              example:
+                - id: 7702c794-9f05-11ed-a8fc-0242ac120002
+                  username: admin
+                  password: $2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS
+                  role:
+                    name: ADMIN
+                - id: 7e21cf84-9f05-11ed-a8fc-0242ac120002
+                  username: manager
+                  password: $2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm
+                  role:
+                    name: MANAGER
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      summary: Add a new user
+      description: >
+        This method adds a new user.
+      tags:
+        - user-controller
+      requestBody:
+        description: >
+          You must specify the user parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+            example:
+              username: user
+              password: userPass
+              role:
+                name: USER
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+              example:
+                id: f3f6ab13-61b4-48c0-a65b-b03363116190
+                username: user
+                password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
+                role:
+                  name: USER
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Consists only of spaces:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The user's name must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.username
+                        invalidValue: " "
+                      - message: The user's password must not be null and must contain at least one non-whitespace character
+                        propertyPath: replace.userDto.password
+                        invalidValue: " "
+                The role is null:
+                  value:
+                    timestamp: "2022-11-18T08:34:12.995+00:00"
+                    status: Bad Request
+                    violations:
+                      - message: The role must not be null
+                        propertyPath: replace.userDto.role
+                        invalidValue: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Delete all users
+      description: >
+        This method removes all students.
+      tags:
+        - student-controller
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 components:
   schemas:
+    GroupDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    CourseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
     StudentDto:
       type: object
       properties:
@@ -1049,24 +1600,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseDto'
-    GroupDto:
+    RoleDto:
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+            - USER
+            - TEACHER
+            - ADMIN
+            - MANAGER
+            - SUPER_ADMIN
+    UserDto:
+      required:
+        - password
+        - username
+        - role
       type: object
       properties:
         id:
           type: string
           format: uuid
-        name:
+        username:
+          maxLength: 2147483647
+          minLength: 1
           type: string
-    CourseDto:
-      type: object
-      properties:
-        id:
+        password:
+          maxLength: 2147483647
+          minLength: 1
           type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
+        role:
+          $ref: '#/components/schemas/RoleDto'
     CustomError:
       type: object
       properties:
@@ -1110,4 +1674,15 @@ components:
         sort:
           type: array
           items:
+            type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
             type: string

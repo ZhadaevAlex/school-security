@@ -12,10 +12,9 @@ import java.util.UUID;
 @Repository
 public interface GroupRepository extends PagingAndSortingRepository<Group, UUID> {
 
-    @Query(value = "select * from school.school.groups where " +
-            "(select count(*) from school.school.students where " +
-            " school.school.students.group_id = school.school.groups.group_id) < ?1",
-    nativeQuery = true)
-    List<Group> findGroupsByNumberStudents(long numberStudents, Pageable pageable);
+    @Query("select g from Group g " +
+            "left join Student s on g.id = s.group.id " +
+            "group by g.id having count(s) < :numberStudents")
+    List<Group> findByNumberStudents(long numberStudents, Pageable pageable);
 }
 

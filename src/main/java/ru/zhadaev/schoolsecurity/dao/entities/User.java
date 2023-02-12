@@ -20,5 +20,8 @@ public class User {
 
     @Column(name = "user_password")
     private String password;
-}
 
+    @ManyToOne
+    @JoinColumn(name = "role_name")
+    private Role role;
+}

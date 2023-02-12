@@ -1,4 +1,4 @@
-package ru.zhadaev.schoolsecurity.service;
+package ru.zhadaev.schoolsecurity.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRole().getName().name())
                 .build();
     }
 }

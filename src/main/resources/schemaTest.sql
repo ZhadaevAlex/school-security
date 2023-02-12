@@ -8,13 +8,9 @@ drop table if exists school.groups;
 
 drop table if exists school.courses;
 
-drop sequence if exists school.groups_group_id_sequence;
-
-drop sequence if exists school.courses_course_id_sequence;
-
-drop sequence if exists school.students_student_id_sequence;
-
 drop table if exists school.users;
+
+drop table if exists school.roles;
 
 create table if not exists school.groups
 (
@@ -26,13 +22,13 @@ create table if not exists school.courses
 (
     course_id          uuid primary key,
     course_name        varchar(255) null,
-    course_description text null
+    course_description text         null
 );
 
 create table if not exists school.students
 (
     student_id uuid primary key,
-    group_id   uuid null,
+    group_id   uuid         null,
     first_name varchar(255) null,
     last_name  varchar(255) null,
     foreign key (group_id) references school.groups (group_id) on delete set null
@@ -47,10 +43,16 @@ create table if not exists school.students_courses
     unique (student_id, course_id)
 );
 
-create table if not exists school.users
+create table if not exists school.roles
 (
-    user_id          uuid primary key,
-    user_username    varchar(255) null,
-    user_password    varchar(255) null
+    role_name varchar(255) null primary key
 );
 
+create table if not exists school.users
+(
+    user_id       uuid primary key,
+    user_username varchar(255) null,
+    user_password varchar(255) null,
+    role_name varchar(255) null,
+    foreign key (role_name) references school.roles (role_name) on delete set null
+);
