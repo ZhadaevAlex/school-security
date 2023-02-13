@@ -28,7 +28,7 @@ public class GroupService {
         return mapper.toDto(saved);
     }
 
-    public GroupDto replace(GroupDto groupDto, UUID id) {
+    public GroupDto updatePut(GroupDto groupDto, UUID id) {
         if (!this.existsById(id)) {
             throw new NotFoundException(String.format("Group replace error. Group not found by id = %s", id));
         }
@@ -38,7 +38,7 @@ public class GroupService {
         return mapper.toDto(replaced);
     }
 
-    public GroupDto update(GroupDto groupDto, UUID id) {
+    public GroupDto updatePatch(GroupDto groupDto, UUID id) {
         GroupDto found = this.findById(id);
         Group group = mapper.toEntity(found);
         mapper.update(groupDto, group);

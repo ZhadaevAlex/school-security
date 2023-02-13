@@ -28,7 +28,7 @@ public class CourseService {
         return mapper.toDto(saved);
     }
 
-    public CourseDto replace(CourseDto courseDto, UUID id) {
+    public CourseDto updatePut(CourseDto courseDto, UUID id) {
         if (!this.existsById(id)) {
             throw new NotFoundException(String.format("Course replace error. Course not found by id = %s", id));
         }
@@ -38,7 +38,7 @@ public class CourseService {
         return mapper.toDto(replaced);
     }
 
-    public CourseDto update(CourseDto courseDto, UUID id) {
+    public CourseDto updatePatch(CourseDto courseDto, UUID id) {
         CourseDto found = this.findById(id);
         Course course = mapper.toEntity(found);
         mapper.update(courseDto, course);

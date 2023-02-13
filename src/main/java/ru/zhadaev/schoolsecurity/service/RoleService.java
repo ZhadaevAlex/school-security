@@ -8,10 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.RoleDto;
 import ru.zhadaev.schoolsecurity.api.errors.NotFoundException;
 import ru.zhadaev.schoolsecurity.api.mappers.RoleMapper;
-import ru.zhadaev.schoolsecurity.dao.entities.Role;
 import ru.zhadaev.schoolsecurity.dao.repositories.RoleRepository;
 import ru.zhadaev.schoolsecurity.enums.RoleName;
-
+import ru.zhadaev.schoolsecurity.dao.entities.Role;
 import java.util.List;
 
 @Service

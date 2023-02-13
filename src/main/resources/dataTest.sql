@@ -631,8 +631,8 @@ INSERT INTO school.roles (role_name) VALUES ('MANAGER');
 INSERT INTO school.roles (role_name) VALUES ('SUPER_ADMIN');
 
 -- [ USERS ]
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'user', '$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm', 'USER');
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'teacher', '$2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi', 'TEACHER');
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'admin', '$2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS', 'ADMIN');
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'manager', '$2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm', 'MANAGER');
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'super_admin', '$2a$12$qbkq9xegl0F018A0tAGavOSDVl2JbE2XZ.EaEAcR9wBkrTOZhnEYi', 'SUPER_ADMIN');
+INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'user', '$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm', 'USER'); -- userPass
+INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'teacher', '$2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi', 'TEACHER'); -- teacherPass
+INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'admin', '$2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS', 'ADMIN'); -- adminPass
+INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'manager', '$2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm', 'MANAGER'); -- managerPass
+INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'super_admin', '$2a$12$qbkq9xegl0F018A0tAGavOSDVl2JbE2XZ.EaEAcR9wBkrTOZhnEYi', 'SUPER_ADMIN'); -- superAdminPass

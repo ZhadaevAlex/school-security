@@ -52,13 +52,13 @@ public class GroupController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public GroupDto replace(@RequestBody @Valid GroupDto groupDto, @PathVariable("id") UUID id) {
-        return groupService.replace(groupDto, id);
+    public GroupDto updatePut(@RequestBody @Valid GroupDto groupDto, @PathVariable("id") UUID id) {
+        return groupService.updatePut(groupDto, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public GroupDto update(@RequestBody @Valid GroupDto groupDto, @PathVariable("id") UUID id) {
-        return groupService.update(groupDto, id);
+    public GroupDto updatePatch(@RequestBody @Valid GroupDto groupDto, @PathVariable("id") UUID id) {
+        return groupService.updatePatch(groupDto, id);
     }
 }

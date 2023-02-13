@@ -50,14 +50,14 @@ public class UserController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPostPut.class)
-    public UserDto replace(@RequestBody @Valid UserDto userDto, @PathVariable UUID id) {
-        return userService.replace(userDto, id);
+    public UserDto updatePut(@RequestBody @Valid UserDto userDto, @PathVariable UUID id) {
+        return userService.updatePut(userDto, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPatch.class)
-    public UserDto update(@RequestBody @Valid UserDto userDto, @PathVariable("id") UUID id) {
-        return userService.update(userDto, id);
+    public UserDto updatePatch(@RequestBody @Valid UserDto userDto, @PathVariable("id") UUID id) {
+        return userService.updatePatch(userDto, id);
     }
 }
