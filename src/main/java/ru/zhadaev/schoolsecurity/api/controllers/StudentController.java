@@ -51,14 +51,14 @@ public class StudentController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPostPut.class)
-    public StudentDto replace(@RequestBody @Valid StudentDto studentDto, @PathVariable UUID id) {
-        return studentService.replace(studentDto, id);
+    public StudentDto updatePut(@RequestBody @Valid StudentDto studentDto, @PathVariable UUID id) {
+        return studentService.updatePut(studentDto, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPatch.class)
-    public StudentDto update(@RequestBody @Valid StudentDto studentDto, @PathVariable("id") UUID id) {
-        return studentService.update(studentDto, id);
+    public StudentDto updatePatch(@RequestBody @Valid StudentDto studentDto, @PathVariable("id") UUID id) {
+        return studentService.updatePatch(studentDto, id);
     }
 }

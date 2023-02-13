@@ -50,14 +50,14 @@ public class CourseController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPostPut.class)
-    public CourseDto replace(@RequestBody @Valid CourseDto courseDto, @PathVariable UUID id) {
-        return courseService.replace(courseDto, id);
+    public CourseDto updatePut(@RequestBody @Valid CourseDto courseDto, @PathVariable UUID id) {
+        return courseService.updatePut(courseDto, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Validated(Marker.OnPatch.class)
-    public CourseDto update(@RequestBody @Valid CourseDto courseDto, @PathVariable("id") UUID id) {
-        return courseService.update(courseDto, id);
+    public CourseDto updatePatch(@RequestBody @Valid CourseDto courseDto, @PathVariable("id") UUID id) {
+        return courseService.updatePatch(courseDto, id);
     }
 }

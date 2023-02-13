@@ -28,7 +28,7 @@ public class StudentService {
         return mapper.toDto(saved);
     }
 
-    public StudentDto replace(StudentDto studentDto, UUID id) {
+    public StudentDto updatePut(StudentDto studentDto, UUID id) {
         if (!existsById(id)) {
             throw new NotFoundException(String.format("Student replace error. Student not found by id = %s", id));
         }
@@ -38,7 +38,7 @@ public class StudentService {
         return mapper.toDto(replaced);
     }
 
-    public StudentDto update(StudentDto studentDto, UUID id) {
+    public StudentDto updatePatch(StudentDto studentDto, UUID id) {
         StudentDto found = this.findById(id);
         Student student = mapper.toEntity(found);
         mapper.update(studentDto, student);

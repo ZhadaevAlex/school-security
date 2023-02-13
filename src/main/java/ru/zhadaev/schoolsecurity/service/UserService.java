@@ -32,7 +32,7 @@ public class UserService {
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
-    public UserDto replace(UserDto userDto, UUID id) {
+    public UserDto updatePut(UserDto userDto, UUID id) {
         if (!this.existsById(id)) {
             throw new NotFoundException(String.format("User replace error. User not found by id = %s", id));
         }
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
-    public UserDto update(UserDto userDto, UUID id) {
+    public UserDto updatePatch(UserDto userDto, UUID id) {
         UserDto found = this.findById(id);
         User user = mapper.toEntity(found);
         mapper.update(userDto, user);
