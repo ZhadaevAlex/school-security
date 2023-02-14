@@ -2,7 +2,7 @@ package ru.zhadaev.schoolsecurity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.GroupDto;
@@ -17,17 +17,18 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
-@Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER"})
 public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper mapper;
 
+    @PreAuthorize("hasAuthority('GROUP_CREATE')")
     public GroupDto save(GroupDto groupDto) {
         Group group = mapper.toEntity(groupDto);
         Group saved = groupRepository.save(group);
         return mapper.toDto(saved);
     }
 
+    @PreAuthorize("hasAuthority('GROUP_UPDATE')")
     public GroupDto updatePut(GroupDto groupDto, UUID id) {
         if (!this.existsById(id)) {
             throw new NotFoundException(String.format("Group replace error. Group not found by id = %s", id));
@@ -38,6 +39,7 @@ public class GroupService {
         return mapper.toDto(replaced);
     }
 
+    @PreAuthorize("hasAuthority('GROUP_UPDATE')")
     public GroupDto updatePatch(GroupDto groupDto, UUID id) {
         GroupDto found = this.findById(id);
         Group group = mapper.toEntity(found);
@@ -46,14 +48,14 @@ public class GroupService {
         return mapper.toDto(group);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
+    @PreAuthorize("hasAuthority('GROUP_READ')")
     public GroupDto findById(UUID id) {
         Group group = groupRepository.findById(id).
                 orElseThrow(() -> new NotFoundException(String.format("Group not found by id = %s", id)));
         return mapper.toDto(group);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
+    @PreAuthorize("hasAuthority('GROUP_READ')")
     public List<GroupDto> findAll(Integer numberStudents, Pageable pageable) {
         List<Group> groups = (numberStudents == null) ?
                 groupRepository.findAll(pageable).toList()
@@ -69,6 +71,7 @@ public class GroupService {
         return groupRepository.count();
     }
 
+    @PreAuthorize("hasAuthority('GROUP_DELETE')")
     public void deleteById(UUID id) {
         if (existsById(id)) {
             groupRepository.deleteById(id);
@@ -77,10 +80,12 @@ public class GroupService {
         }
     }
 
+    @PreAuthorize("hasAuthority('GROUP_DELETE')")
     public void delete(Group group) {
         groupRepository.delete(group);
     }
 
+    @PreAuthorize("hasAuthority('GROUP_DELETE')")
     public void deleteAll() {
         groupRepository.deleteAll();
     }

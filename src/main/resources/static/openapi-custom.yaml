@@ -64,6 +64,10 @@ paths:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
                 message: Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     put:
       summary: Edit a student
       description: >
@@ -158,10 +162,10 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The student's last name must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.studentDto.lastName
+                        propertyPath: updatePut.studentDto.lastName
                         invalidValue: "  "
                       - message: The student's first name must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.studentDto.firstName
+                        propertyPath: updatePut.studentDto.firstName
                         invalidValue: "  "
                 Less than two characters:
                   value:
@@ -177,6 +181,8 @@ paths:
 
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete a student
       description: >
@@ -207,6 +213,8 @@ paths:
                 message: Student delete error. Student not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     patch:
       summary: Edit a student
       description: >
@@ -278,10 +286,10 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The student's last name must contain at least one non-whitespace character. Can be null
-                        propertyPath: update.studentDto.lastName
+                        propertyPath: updatePatch.studentDto.lastName
                         invalidValue: "  "
                       - message: The student's first name must contain at least one non-whitespace character. Can be null
-                        propertyPath: update.studentDto.firstName
+                        propertyPath: updatePatch.studentDto.firstName
                         invalidValue: "  "
                 Less than two characters:
                   value:
@@ -289,13 +297,15 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The student's last name must consist of at least two characters
-                        propertyPath: update.studentDto.lastName
+                        propertyPath: updatePost.studentDto.lastName
                         invalidValue: B
                       - message: The student's first name must consist of at least two characters
-                        propertyPath: studentDto
+                        propertyPath: updatePost.studentDto.firstName
                         invalidValue: A
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/groups/{id}:
     summary: Represents a group
     description: >
@@ -336,6 +346,10 @@ paths:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
                 message: Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     put:
       summary: Edit a group
       description: >
@@ -396,6 +410,8 @@ paths:
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete a group
       description: >
@@ -426,6 +442,8 @@ paths:
                 message: Group delete error. Group not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     patch:
       summary: Edit a group
       description: >
@@ -486,6 +504,8 @@ paths:
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/courses/{id}:
     summary: Represents a course
     description: >
@@ -528,6 +548,8 @@ paths:
                 message: Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     put:
       summary: Edit a course
       description: >
@@ -599,10 +621,12 @@ paths:
                 status: Bad Request
                 violations:
                   - message: The course name must not be null and must contain at least one non-whitespace character
-                    propertyPath: replace.courseDto.name
+                    propertyPath: updatePut.courseDto.name
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete a course
       description: >
@@ -633,6 +657,8 @@ paths:
                 message: Course delete error. Course not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     patch:
       summary: Edit a course
       description: >
@@ -691,70 +717,43 @@ paths:
                 status: Bad Request
                 violations:
                   - message: The course name must contain at least one non-whitespace character. Can be null
-                    propertyPath: update.courseDto.name
+                    propertyPath: updatePost.courseDto.name
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /api/roles/{id}:
-    summary: Represents a role
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+  /api/permissions/{id}:
+    summary: Represents a permission
     description: >
-      This resource represents an individual role in the system.
-      Each role is identified by a `id`.
+      This resource represents an individual permission in the system.
+      Each permission is identified by a `id`.
     get:
-      summary: Get a role by id
+      summary: Get a permission by id
       description: >
-        This method allows you to get a role by its id.
+        This method allows you to get a permission by its id.
       tags:
-        - role-controller
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/RoleDto'
-          description: The role id
-          example: USER
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RoleDto'
-              example:
-                name: USER
-        '404':
-          description: Role not found by id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomError'
-              example:
-                timestamp: "2022-11-17T17:47:01.030+00:00"
-                status: Not Found
-                message: Role not found by id = WIZARD
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-    delete:
-      summary: Delete a role
-      description: >
-        This method removes the role with the specified id.
-      tags:
-        - role-controller
+        - permission-controller
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: The role id
-          example: USER
+          description: The permission id
+          example: USER_UPDATE
       responses:
         '200':
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionDto'
+              example:
+                name: USER
+                description: "Endpoint: user; operation: update"
         '404':
-          description: Role delete error. Role not found by id = WIZARD
+          description: Permission not found by id
           content:
             application/json:
               schema:
@@ -762,9 +761,90 @@ paths:
               example:
                 timestamp: "2022-11-17T17:47:01.030+00:00"
                 status: Not Found
-                message: Rold delete error. Role not found by id = WIZARD
+                message: Permission not found by id = WIZARD_CREATE
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+    patch:
+      summary: Edit a permission
+      description: >
+        This method updates the permission with the specified id. The values of the permission properties are replaced with the values from the request body. Unspecified values are not changed.
+      tags:
+        - permission-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The permission id
+          example: USER_UPDATE
+      requestBody:
+        description: >
+          You must specify the permission parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionDto'
+            example: 
+              description: "Endpoint: user; op: update"
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionDto'
+              example:
+                name: USER_UPDATE
+                description: "Endpoint: user; op: update"
+        '404':
+          description: Permission update error. Permission not found by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Permission not found by id = WIZARD_CREATE
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+    delete:
+      summary: Delete a permission
+      description: >
+        This method removes the permission with the specified id.
+      tags:
+        - permission-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The permission id
+          example: USER_UPDATE
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Permission delete error. Permission not found by id = WIZARD
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomError'
+              example:
+                timestamp: "2022-11-17T17:47:01.030+00:00"
+                status: Not Found
+                message: Rold delete error. Permission not found by id = WIZARD
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/users/{id}:
     summary: Represents a user
     description: >
@@ -796,8 +876,13 @@ paths:
                 id: f3f6ab13-61b4-48c0-a65b-b03363116190
                 username: user
                 password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
-                role:
-                  name: USER
+                permissions:
+                  - name: COURSE_READ
+                    description: "Endpoint: courses; operation: read"
+                  - name: GROUP_READ
+                    description: "Endpoint: groups; operation: read"
+                  - name: STUDENT_READ
+                    description: "Endpoint: students; operation: read"
         '404':
           description: User not found by id
           content:
@@ -810,6 +895,8 @@ paths:
                 message: User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     put:
       summary: Edit a user
       description: >
@@ -835,8 +922,13 @@ paths:
             example:
               username: user
               password: userPass
-              role:
-                name: USER
+              permissions:
+                - name: COURSE_READ
+                  description: "Endpoint: courses; op: read"
+                - name: GROUP_READ
+                  description: "Endpoint: groups; op: read"
+                - name: STUDENT_READ
+                  description: "Endpoint: students; op: read"
         required: true
       responses:
         '202':
@@ -846,11 +938,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDto'
               example:
-                id: f3f6ab13-61b4-48c0-a65b-b03363116190
                 username: user
-                password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
-                role:
-                  name: USER
+                password: userPass
+                permissions:
+                  - name: COURSE_READ
+                    description: "Endpoint: courses; op: read"
+                  - name: GROUP_READ
+                    description: "Endpoint: groups; op: read"
+                  - name: STUDENT_READ
+                    description: "Endpoint: students; op: read"
         '404':
           description: User replace error. User not found by id.
           content:
@@ -874,10 +970,10 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The user's name must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.username
+                        propertyPath: updatePut.userDto.username
                         invalidValue: " "
                       - message: The user's password must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.password
+                        propertyPath: updatePut.userDto.password
                         invalidValue: " "
                 The role is null:
                   value:
@@ -889,6 +985,8 @@ paths:
                         invalidValue: null
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete a user
       description: >
@@ -919,6 +1017,8 @@ paths:
                 message: User delete error. User not found by id = a46e9a8e-f535-4437-8bbf-c3a7216e74e6
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     patch:
       summary: Edit a user
       description: >
@@ -943,8 +1043,6 @@ paths:
               $ref: '#/components/schemas/UserDto'
             example:
               password: newPass
-              role:
-                name: SUPER_ADMIN
         required: true
       responses:
         '202':
@@ -956,9 +1054,14 @@ paths:
               example:
                 id: f3f6ab13-61b4-48c0-a65b-b03363116190
                 username: user
-                password: $2a$10$w25yzk43HIzZC4zGc.kLo.kuZGO1fK0YSMhGW7xLR8HJKMi5uUgfC
-                role:
-                  name: SUPER_ADMIN
+                password: $2a$10$yXXVd5eeiuxyLfLOGTK.R./tiHUA4R3Od6jxUONTZceGgo6lSJHE6
+                permissions:
+                  - name: COURSE_READ
+                    description: "Endpoint: courses; operation: read"
+                  - name: GROUP_READ
+                    description: "Endpoint: groups; operation: read"
+                  - name: STUDENT_READ
+                    description: "Endpoint: students; operation: read"
         '404':
           description: User update error. User not found by id
           content:
@@ -982,13 +1085,15 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The user's name must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.username
+                        propertyPath: updatePatch.userDto.username
                         invalidValue: " "
                       - message: The user's password must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.password
+                        propertyPath: updatePatch.userDto.password
                         invalidValue: " "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/students:
     summary: Represents a students
     description: >
@@ -1058,6 +1163,10 @@ paths:
                     - id: 99c44d20-1056-49a7-a3a4-2e86cf4e0688
                       name: Botany
                       description: Subject Botany
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     post:
       summary: Add a new student
       description: >
@@ -1152,6 +1261,8 @@ paths:
                         invalidValue: A
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete all students
       description: >
@@ -1163,6 +1274,8 @@ paths:
           description: Successful operation
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/groups:
     summary: Represents a groups
     description: >
@@ -1224,6 +1337,10 @@ paths:
                   - message: The number of students must be greater than or equal to zero
                     propertyPath: findAll.numberStudents
                     invalidValue: -2
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     post:
       summary: Add a new group
       description: >
@@ -1265,6 +1382,8 @@ paths:
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete all groups
       description: >
@@ -1276,6 +1395,8 @@ paths:
           description: Successful operation
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/courses:
     summary: Represents a courses
     description: >
@@ -1313,10 +1434,14 @@ paths:
                   description:  Subject Chemistry
                 - id: df5b330d-5f6a-4223-8d0b-b71f45636b9f
                   name: Literature
-                  directional:  Subject Literature
+                  description:  Subject Literature
                 - id: acffffde-c76d-4618-9a32-2e79d5cd087e
                   name: Music
-                  directional: Subject Music
+                  description: Subject Music
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     post:
       summary: Add a new course
       description: >
@@ -1361,6 +1486,8 @@ paths:
                     invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete all courses
       description: >
@@ -1372,16 +1499,18 @@ paths:
           description: Successful operation
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /api/roles:
-    summary: Represents a roles
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+  /api/permissions:
+    summary: Represents a permission
     description: >
-      This resource represents an all roles in the system.
+      This resource represents an all permissions in the system.
     get:
-      summary: Get all roles
+      summary: Get all permissions
       description: >
-        This method allows you to get a list of all roles. If the filter parameter is set, the method returns a list of filtered roles.
+        This method allows you to get a list of all permissions.
       tags:
-        - role-controller
+        - permission-controller
       parameters:
         - name: pageable
           in: query
@@ -1402,50 +1531,76 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RoleDto'
+                  $ref: '#/components/schemas/PermissionDto'
               example:
-                - name: USER
-                - name: TEACHER
-                - name: ADMIN
+                - name: USER_UPDATE
+                  description: "Endpoint: user; operation: update"
+                - name: USER_READ
+                  description: "Endpoint: user; operation: read"
+                - name: USER_DELETE
+                  description: "Endpoint: user; operation: delete"
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     post:
-      summary: Add a new role
+      summary: Add a new permission
       description: >
-        This method adds a new role.
+        This method adds a new permission.
       tags:
-        - role-controller
+        - permission-controller
       requestBody:
         description: >
-          You must specify the role parameters.
+          You must specify the permission parameters.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoleDto'
+              $ref: '#/components/schemas/PermissionDto'
             example:
-              name: ADMIN
+              name: WIZZARD_CREATE
+              description: "Endpoint: super_admin; operation: create"
+        required: true
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoleDto'
+                $ref: '#/components/schemas/PermissionDto'
               example:
-                name: ADMIN
+                name: WIZZARD_CREATE
+                description:  "Endpoint: super_admin; operation: create"
+        '400':
+          description: >
+            Validation error. The permission name must not be null and must contain at least one non-whitespace character
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2022-11-17T20:05:27.674+00:00"
+                status: Bad Request
+                violations:
+                  - message: The permission name must not be null and must contain at least one non-whitespace character
+                    propertyPath: save.permissionDto.name
+                    invalidValue: "  "
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
-      summary: Delete all roles
+      summary: Delete all permissions
       description: >
-        This method removes all roles.
+        This method removes all permissions.
       tags:
-        - role-controller
+        - permission-controller
       responses:
         '200':
           description: Successful operation
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
   /api/users:
     summary: Represents a users
     description: >
@@ -1465,7 +1620,7 @@ paths:
           description: Page number, size, sorting
           example:
             page: 0
-            size: 3
+            size: 2
             sort:
               - username,asc
       responses:
@@ -1478,18 +1633,42 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserDto'
               example:
-                - id: 7702c794-9f05-11ed-a8fc-0242ac120002
-                  username: admin
-                  password: $2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS
-                  role:
-                    name: ADMIN
-                - id: 7e21cf84-9f05-11ed-a8fc-0242ac120002
-                  username: manager
-                  password: $2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm
-                  role:
-                    name: MANAGER
+              - id: 17b5254a-e96e-4e85-a6d3-6f2a4b68f16c
+                username: teacher
+                password: $2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi
+                permissions:
+                  - name: COURSE_READ
+                    description: "Endpoint: courses; operation: read"
+                  - name: COURSE_DELETE
+                    description: "Endpoint: courses; operation: delete"
+                  - name: GROUP_DELETE
+                    description: "Endpoint: groups; operation: delete"
+                  - name: GROUP_UPDATE
+                    description: "Endpoint: groups; operation: update"
+                  - name: GROUP_CREATE
+                    description: "Endpoint: groups; operation: create"
+                  - name: GROUP_READ
+                    description: "Endpoint: groups; operation: read"
+                  - name: COURSE_CREATE
+                    description: "Endpoint: courses; operation: create"
+                  - name: COURSE_UPDATE
+                    description: "Endpoint: courses; operation: update"
+                  - name: STUDENT_READ
+                    description: "Endpoint: students; operation: read"
+              - id: f3f6ab13-61b4-48c0-a65b-b03363116190
+                username: user
+                password: $2a$10$yXXVd5eeiuxyLfLOGTK.R./tiHUA4R3Od6jxUONTZceGgo6lSJHE6
+                permissions:
+                  - name: COURSE_READ
+                    description: "Endpoint: courses; operation: read"
+                  - name: GROUP_READ
+                    description: "Endpoint: groups; operation: read"
+                  - name: STUDENT_READ
+                    description: "Endpoint: students; operation: read"
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     post:
       summary: Add a new user
       description: >
@@ -1504,10 +1683,12 @@ paths:
             schema:
               $ref: '#/components/schemas/UserDto'
             example:
-              username: user
-              password: userPass
-              role:
-                name: USER
+              username: newUser
+              password: newUserPass
+              permissions:
+                - name: COURSE_READ
+                - name: GROUP_READ
+                - name: STUDENT_READ
         required: true
       responses:
         '201':
@@ -1517,11 +1698,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDto'
               example:
-                id: f3f6ab13-61b4-48c0-a65b-b03363116190
-                username: user
-                password: $2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm
-                role:
-                  name: USER
+                id: 4c52c71e-729e-48e6-9fc4-41fde2923434
+                username: newUser
+                password: $2a$10$8WeoqD4pcOkY49qk1yFah.kWvhVC/BDii3GC3znJh/.ddsPbDaQ2a
+                permissions:
+                  - name: COURSE_READ
+                    description: null
+                  - name: GROUP_READ
+                    description: null
+                  - name: STUDENT_READ
+                    description: null
         '400':
           description: Validation error
           content:
@@ -1535,21 +1721,23 @@ paths:
                     status: Bad Request
                     violations:
                       - message: The user's name must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.username
+                        propertyPath: save.userDto.username
                         invalidValue: " "
                       - message: The user's password must not be null and must contain at least one non-whitespace character
-                        propertyPath: replace.userDto.password
+                        propertyPath: save.userDto.password
                         invalidValue: " "
-                The role is null:
+                The permission is null:
                   value:
                     timestamp: "2022-11-18T08:34:12.995+00:00"
                     status: Bad Request
                     violations:
-                      - message: The role must not be null
-                        propertyPath: replace.userDto.role
+                      - message: The permission must not be null
+                        propertyPath: save.userDto.permissions
                         invalidValue: null
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
     delete:
       summary: Delete all users
       description: >
@@ -1561,6 +1749,8 @@ paths:
           description: Successful operation
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
 components:
   schemas:
     GroupDto:
@@ -1600,22 +1790,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseDto'
-    RoleDto:
+    PermissionDto:
+      required:
+        - name
       type: object
       properties:
         name:
           type: string
-          enum:
-            - USER
-            - TEACHER
-            - ADMIN
-            - MANAGER
-            - SUPER_ADMIN
+        description:
+          type: string
     UserDto:
       required:
         - password
         - username
-        - role
       type: object
       properties:
         id:
@@ -1629,8 +1816,10 @@ components:
           maxLength: 2147483647
           minLength: 1
           type: string
-        role:
-          $ref: '#/components/schemas/RoleDto'
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionDto'
     CustomError:
       type: object
       properties:
@@ -1686,3 +1875,5 @@ components:
         WWW_Authenticate:
           schema:
             type: string
+    ForbiddenError:
+      description: Access to the requested resource is forbidden

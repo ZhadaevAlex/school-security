@@ -2,7 +2,7 @@ package ru.zhadaev.schoolsecurity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.StudentDto;
@@ -17,17 +17,18 @@ import java.util.UUID;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
-@Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper mapper;
 
+    @PreAuthorize("hasAuthority('STUDENT_CREATE')")
     public StudentDto save(StudentDto studentDto) {
         Student student = mapper.toEntity(studentDto);
         Student saved = studentRepository.save(student);
         return mapper.toDto(saved);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT_UPDATE')")
     public StudentDto updatePut(StudentDto studentDto, UUID id) {
         if (!existsById(id)) {
             throw new NotFoundException(String.format("Student replace error. Student not found by id = %s", id));
@@ -38,6 +39,7 @@ public class StudentService {
         return mapper.toDto(replaced);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT_UPDATE')")
     public StudentDto updatePatch(StudentDto studentDto, UUID id) {
         StudentDto found = this.findById(id);
         Student student = mapper.toEntity(found);
@@ -46,14 +48,14 @@ public class StudentService {
         return mapper.toDto(student);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
+    @PreAuthorize("hasAuthority('STUDENT_READ')")
     public StudentDto findById(UUID id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Student not found by id = %s", id)));
         return mapper.toDto(student);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER"})
+    @PreAuthorize("hasAuthority('STUDENT_READ')")
     public List<StudentDto> findAll(UUID courseId, Pageable pageable) {
         List<Student> students = (courseId == null) ?
                 studentRepository.findAll(pageable).toList()
@@ -69,6 +71,7 @@ public class StudentService {
         return studentRepository.count();
     }
 
+    @PreAuthorize("hasAuthority('STUDENT_DELETE')")
     public void deleteById(UUID id) {
         if (existsById(id)) {
             studentRepository.deleteById(id);
@@ -77,10 +80,12 @@ public class StudentService {
         }
     }
 
+    @PreAuthorize("hasAuthority('STUDENT_DELETE')")
     public void delete(Student student) {
         studentRepository.delete(student);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT_DELETE')")
     public void deleteAll() {
         studentRepository.deleteAll();
     }
