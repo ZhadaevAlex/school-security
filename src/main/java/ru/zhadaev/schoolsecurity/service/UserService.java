@@ -2,7 +2,7 @@ package ru.zhadaev.schoolsecurity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +18,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
-@Secured("ROLE_SUPER_ADMIN")
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
 
+    @PreAuthorize("hasAuthority('USER_CREATE')")
     public UserDto save(UserDto userDto) {
         User user = mapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -31,7 +31,7 @@ public class UserService {
         return mapper.toDto(saved);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
+    @PreAuthorize("hasAuthority('USER_UPDATE')")
     public UserDto updatePut(UserDto userDto, UUID id) {
         if (!this.existsById(id)) {
             throw new NotFoundException(String.format("User replace error. User not found by id = %s", id));
@@ -43,7 +43,7 @@ public class UserService {
         return mapper.toDto(replaced);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
+    @PreAuthorize("hasAuthority('USER_UPDATE')")
     public UserDto updatePatch(UserDto userDto, UUID id) {
         UserDto found = this.findById(id);
         User user = mapper.toEntity(found);
@@ -53,14 +53,14 @@ public class UserService {
         return mapper.toDto(user);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
+    @PreAuthorize("hasAuthority('USER_READ')")
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("User not found by id = %s", id)));
         return mapper.toDto(user);
     }
 
-    @Secured({"ROLE_SUPER_ADMIN", "ROLE_MANAGER"})
+    @PreAuthorize("hasAuthority('USER_READ')")
     public List<UserDto> findAll(Pageable pageable) {
         List<User> users = userRepository.findAll(pageable).toList();
         return mapper.toDto(users);
@@ -74,6 +74,7 @@ public class UserService {
         return userRepository.count();
     }
 
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     public void deleteById(UUID id) {
         if (existsById(id)) {
             userRepository.deleteById(id);
@@ -82,10 +83,12 @@ public class UserService {
         }
     }
 
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     public void delete(User user) {
         userRepository.delete(user);
     }
 
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     public void deleteAll() {
         userRepository.deleteAll();
     }

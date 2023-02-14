@@ -623,16 +623,92 @@ INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('28bd5a3f-66c9-484b-a400-157e665d492b', 'd6d50d2f-d3e7-4b74-aff6-4429fcdb51f5');
 INSERT INTO school.students_courses (student_id, course_id) VALUES ('46702db5-622d-44d7-a109-d4e8be356079', '99c44d20-1056-49a7-a3a4-2e86cf4e0688');
 
--- [ ROLES ]
-INSERT INTO school.roles (role_name) VALUES ('USER');
-INSERT INTO school.roles (role_name) VALUES ('TEACHER');
-INSERT INTO school.roles (role_name) VALUES ('ADMIN');
-INSERT INTO school.roles (role_name) VALUES ('MANAGER');
-INSERT INTO school.roles (role_name) VALUES ('SUPER_ADMIN');
+-- [ PERMISSIONS ]
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('GROUP_CREATE', 'Endpoint: groups; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('GROUP_READ', 'Endpoint: groups; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('GROUP_UPDATE', 'Endpoint: groups; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('GROUP_DELETE', 'Endpoint: groups; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('COURSE_CREATE', 'Endpoint: courses; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('COURSE_READ', 'Endpoint: courses; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('COURSE_UPDATE', 'Endpoint: courses; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('COURSE_DELETE', 'Endpoint: courses; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_CREATE', 'Endpoint: students; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_READ', 'Endpoint: students; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_UPDATE', 'Endpoint: students; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_DELETE', 'Endpoint: students; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_CREATE', 'Endpoint: permission; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_READ', 'Endpoint: permission; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_UPDATE', 'Endpoint: permission; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_DELETE', 'Endpoint: permission; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_CREATE', 'Endpoint: user; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_READ', 'Endpoint: user; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_UPDATE', 'Endpoint: user; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_DELETE', 'Endpoint: user; operation: delete');
+
 
 -- [ USERS ]
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'user', '$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm', 'USER'); -- userPass
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'teacher', '$2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi', 'TEACHER'); -- teacherPass
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'admin', '$2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS', 'ADMIN'); -- adminPass
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'manager', '$2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm', 'MANAGER'); -- managerPass
-INSERT INTO school.users (user_id, user_username, user_password, role_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'super_admin', '$2a$12$qbkq9xegl0F018A0tAGavOSDVl2JbE2XZ.EaEAcR9wBkrTOZhnEYi', 'SUPER_ADMIN'); -- superAdminPass
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'user', '$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm'); -- userPass
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'teacher', '$2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi'); -- teacherPass
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'admin', '$2a$12$amzrg/wj.ZdH0NvZcE4PAefVyGVQwQpy6Aql54Po0WyHkT3RcszCS'); -- adminPass
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'manager', '$2a$12$05z7rkfeMzN0rxdjqYCHreNW77NExjHbRkNrKaaw4DgdMGbptnyUm'); -- managerPass
+INSERT INTO school.users (user_id, user_username, user_password) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'super_admin', '$2a$12$qbkq9xegl0F018A0tAGavOSDVl2JbE2XZ.EaEAcR9wBkrTOZhnEYi'); -- superAdminPass
+
+-- [ USERS  <- TO ->  PERMISSIONS ]
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'GROUP_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'COURSE_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'STUDENT_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'GROUP_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'GROUP_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'GROUP_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'GROUP_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'COURSE_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'COURSE_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'COURSE_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'COURSE_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('17b5254a-e96e-4e85-a6d3-6f2a4b68f16c', 'STUDENT_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'GROUP_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'GROUP_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'GROUP_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'GROUP_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'COURSE_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'COURSE_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'COURSE_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'COURSE_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'STUDENT_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'STUDENT_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'STUDENT_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7702c794-9f05-11ed-a8fc-0242ac120002', 'STUDENT_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'GROUP_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'GROUP_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'GROUP_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'GROUP_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'COURSE_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'COURSE_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'COURSE_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'COURSE_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'STUDENT_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'STUDENT_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'STUDENT_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'STUDENT_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'USER_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('7e21cf84-9f05-11ed-a8fc-0242ac120002', 'USER_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'GROUP_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'GROUP_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'GROUP_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'GROUP_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'COURSE_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'COURSE_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'COURSE_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'COURSE_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'STUDENT_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'STUDENT_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'STUDENT_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'STUDENT_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'USER_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'USER_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'USER_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'USER_DELETE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'PERMISSION_CREATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'PERMISSION_READ');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'PERMISSION_UPDATE');
+INSERT INTO school.users_permissions (user_id, permission_name) VALUES ('841337d4-9f05-11ed-a8fc-0242ac120002', 'PERMISSION_DELETE');

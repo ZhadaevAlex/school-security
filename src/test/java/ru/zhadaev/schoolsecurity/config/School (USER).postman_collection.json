@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a9917a22-0804-4ae2-ba4b-5e16363c147c",
+		"_postman_id": "5a4c23a1-5518-44cf-813b-8baf37146d82",
 		"name": "School (USER)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24270226"
@@ -575,15 +575,15 @@
 			]
 		},
 		{
-			"name": "Roles",
+			"name": "Permissions",
 			"item": [
 				{
-					"name": "Get all roles",
+					"name": "Get all permissions",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/roles?page=0&size=4&sort=name,desc",
+							"raw": "http://localhost:8080/api/permissions?page=0&size=10&sort=name,desc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -591,7 +591,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"roles"
+								"permissions"
 							],
 							"query": [
 								{
@@ -600,7 +600,7 @@
 								},
 								{
 									"key": "size",
-									"value": "4"
+									"value": "10"
 								},
 								{
 									"key": "sort",
@@ -612,12 +612,12 @@
 					"response": []
 				},
 				{
-					"name": "Get role by id",
+					"name": "Get permission by id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/roles/USER",
+							"raw": "http://localhost:8080/api/permissions/USER_CREATE",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -625,42 +625,21 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"roles",
-								"USER"
+								"permissions",
+								"USER_CREATE"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete role by id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/roles/USER",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"roles",
-								"USER"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New role",
+					"name": "New permission",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"USER\"\r\n}",
+							"raw": "{\r\n    \"name\": \"TEST_PERMISSION\",\r\n    \"description\": \"TEST_PERMISSION_DESCRIPTION\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -668,7 +647,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/roles",
+							"raw": "http://localhost:8080/api/permissions",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -676,7 +655,58 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"roles"
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update permission",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"TEST_PERMISSION_DESCRIPTION3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/permissions/TEST_PERMISSION",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"permissions",
+								"TEST_PERMISSION"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete permission by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/permissions/TEST_PERMISSION",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"permissions",
+								"TEST_PERMISSION"
 							]
 						}
 					},
@@ -749,7 +779,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"TEST_USER\",\r\n    \"password\": \"TEST_PASS\",\r\n    \"role\": {\r\n        \"name\": \"USER\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"username\": \"TEST_USER\",\r\n    \"password\": \"TEST_PASS\",\r\n    \"permissions\": [\r\n        {\r\n            \"name\": \"USER_CREATE\"\r\n        },\r\n        {\r\n            \"name\": \"USER_DELETE\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -778,7 +808,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"TEST2_USER\",\r\n    \"password\": \"TEST2_PASS\",\r\n    \"role\": {\r\n        \"name\": \"USER\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"username\": \"TEST_USER2\",\r\n    \"password\": \"TEST_PASS2\",\r\n    \"permissions\": [\r\n        {\r\n            \"name\": \"PERMISSION_CREATE\"\r\n        },\r\n        {\r\n            \"name\": \"PERMISSION_DELETE\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -808,7 +838,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"role\": {\r\n        \"name\": \"SUPER_ADMIN\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"name\": \"PERMISSION_CREATE\"\r\n        },\r\n        {\r\n            \"name\": \"PERMISSION_DELETE\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1002,12 +1032,12 @@
 					"response": []
 				},
 				{
-					"name": "Delete all roles",
+					"name": "Delete all permissions",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/roles/",
+							"raw": "http://localhost:8080/api/permissions/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1015,7 +1045,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"roles",
+								"permissions",
 								""
 							]
 						}

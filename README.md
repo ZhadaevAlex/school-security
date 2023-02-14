@@ -66,6 +66,6 @@ course_description *string*)
 create schema school
 grant create, usage on schema school to zhadaev
 
-create role zhadaev with createdb login password '123';
+create permission zhadaev with createdb login password '123';
 create database school;
 grant create, connect, temporary on database school to zhadaev;

@@ -6,6 +6,7 @@ import ru.zhadaev.schoolsecurity.api.validation.PatchValidation;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -26,8 +27,7 @@ public class UserDto {
     @Size(min = 1, message = "The user's password must consist of at least one characters")
     private String password;
 
-    @NotNull(groups = Marker.OnPostPut.class,
-            message = "The role must not be null")
-    private RoleDto role;
+    @NotNull(groups = Marker.OnPostPut.class)
+    private Set<PermissionDto> permissions;
 }
 
