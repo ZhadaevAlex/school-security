@@ -80,7 +80,11 @@ public class CourseService {
 
     @PreAuthorize("hasAuthority('COURSE_DELETE')")
     public void delete(Course course) {
-        courseRepository.delete(course);
+        if (existsById(course.getId())) {
+            courseRepository.delete(course);
+        } else {
+            throw new NotFoundException("Course delete error. Course not found");
+        }
     }
 
     @PreAuthorize("hasAuthority('COURSE_DELETE')")

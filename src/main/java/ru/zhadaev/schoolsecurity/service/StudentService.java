@@ -82,7 +82,11 @@ public class StudentService {
 
     @PreAuthorize("hasAuthority('STUDENT_DELETE')")
     public void delete(Student student) {
-        studentRepository.delete(student);
+        if (existsById(student.getId())) {
+            studentRepository.delete(student);
+        } else {
+            throw new NotFoundException("Student delete error. Student not found");
+        }
     }
 
     @PreAuthorize("hasAuthority('STUDENT_DELETE')")

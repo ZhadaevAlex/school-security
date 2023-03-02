@@ -85,7 +85,11 @@ public class UserService {
 
     @PreAuthorize("hasAuthority('USER_DELETE')")
     public void delete(User user) {
-        userRepository.delete(user);
+        if (existsById(user.getId())) {
+            userRepository.delete(user);
+        } else {
+            throw new NotFoundException("User delete error. User not found");
+        }
     }
 
     @PreAuthorize("hasAuthority('USER_DELETE')")

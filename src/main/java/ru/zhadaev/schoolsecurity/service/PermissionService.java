@@ -68,7 +68,11 @@ public class PermissionService {
 
     @PreAuthorize("hasAuthority('PERMISSION_DELETE')")
     public void delete(Permission permission) {
-        permissionRepository.delete(permission);
+        if (existsById(permission.getName())) {
+            permissionRepository.delete(permission);
+        } else {
+            throw new NotFoundException("Permission delete error. Permission not found");
+        }
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_DELETE')")
