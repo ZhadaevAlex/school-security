@@ -6,10 +6,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.PermissionDto;
-import ru.zhadaev.schoolsecurity.api.errors.NotFoundException;
 import ru.zhadaev.schoolsecurity.api.mappers.PermissionMapper;
 import ru.zhadaev.schoolsecurity.dao.repositories.PermissionRepository;
 import ru.zhadaev.schoolsecurity.dao.entities.Permission;
+import ru.zhadaev.schoolsecurity.exception.NotFoundException;
+
 import java.util.List;
 
 @Service

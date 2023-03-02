@@ -6,10 +6,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.zhadaev.schoolsecurity.api.dto.CourseDto;
-import ru.zhadaev.schoolsecurity.api.errors.NotFoundException;
 import ru.zhadaev.schoolsecurity.api.mappers.CourseMapper;
 import ru.zhadaev.schoolsecurity.dao.entities.Course;
 import ru.zhadaev.schoolsecurity.dao.repositories.CourseRepository;
+import ru.zhadaev.schoolsecurity.exception.NotFoundException;
 
 import java.util.List;
 import java.util.UUID;
