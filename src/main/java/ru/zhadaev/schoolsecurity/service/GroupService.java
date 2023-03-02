@@ -82,7 +82,11 @@ public class GroupService {
 
     @PreAuthorize("hasAuthority('GROUP_DELETE')")
     public void delete(Group group) {
-        groupRepository.delete(group);
+        if (existsById(group.getId())) {
+            groupRepository.delete(group);
+        } else {
+            throw new NotFoundException("Group delete error. Group not found");
+        }
     }
 
     @PreAuthorize("hasAuthority('GROUP_DELETE')")
