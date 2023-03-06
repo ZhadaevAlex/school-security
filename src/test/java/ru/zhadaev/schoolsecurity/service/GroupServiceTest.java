@@ -1,8 +1,6 @@
 package ru.zhadaev.schoolsecurity.service;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,6 +30,7 @@ class GroupServiceTest {
     private final String NAME_1 = "YT-80";
     private final String ID_2 = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
     private final String NAME_2 = "BA-51";
+    private final UUID ID1 = UUID.fromString(ID_1);
 
     @Mock
     private GroupRepository groupRepository;
@@ -63,14 +62,14 @@ class GroupServiceTest {
         void updatePut_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-            doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(true).when(groupRepository).existsById(ID1);
             doReturn(group).when(groupRepository).save(group);
             doReturn(group).when(mapper).toEntity(groupDto);
             doReturn(groupDto).when(mapper).toDto(group);
 
-            GroupDto actual = groupService.updatePut(groupDto, UUID.fromString(ID_1));
+            GroupDto actual = groupService.updatePut(groupDto, ID1);
 
-            verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).existsById(ID1);
             verify(groupRepository, times(1)).save(group);
             verify(mapper, times(1)).toEntity(groupDto);
             verify(mapper, times(1)).toDto(group);
@@ -81,25 +80,25 @@ class GroupServiceTest {
         void updatePut_shouldThrowNotFoundException_whenEntityNotFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
 
-            doReturn(false).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(false).when(groupRepository).existsById(ID1);
 
-            assertThrows(NotFoundException.class, () -> groupService.updatePut(groupDto, UUID.fromString(ID_1)));
-            verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
+            assertThrows(NotFoundException.class, () -> groupService.updatePut(groupDto, ID1));
+            verify(groupRepository, times(1)).existsById(ID1);
         }
 
         @Test
         void updatePatch_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-            doReturn(Optional.of(group)).when(groupRepository).findById(UUID.fromString(ID_1));
+            doReturn(Optional.of(group)).when(groupRepository).findById(ID1);
             doReturn(group).when(groupRepository).save(group);
             doNothing().when(mapper).update(groupDto, group);
             doReturn(group).when(mapper).toEntity(groupDto);
             doReturn(groupDto).when(mapper).toDto(group);
 
-            GroupDto actual = groupService.updatePatch(groupDto, UUID.fromString(ID_1));
+            GroupDto actual = groupService.updatePatch(groupDto, ID1);
 
-            verify(groupRepository, times(1)).findById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).findById(ID1);
             verify(groupRepository, times(1)).save(group);
             verify(mapper, times(1)).toEntity(groupDto);
             verify(mapper, times(1)).update(groupDto, group);
@@ -111,10 +110,10 @@ class GroupServiceTest {
         void updatePatch_shouldThrowNotFoundException_whenEntityNotFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
 
-            doReturn(Optional.empty()).when(groupRepository).findById(UUID.fromString(ID_1));
+            doReturn(Optional.empty()).when(groupRepository).findById(ID1);
 
-            assertThrows(NotFoundException.class, () -> groupService.updatePatch(groupDto, UUID.fromString(ID_1)));
-            verify(groupRepository, times(1)).findById(UUID.fromString(ID_1));
+            assertThrows(NotFoundException.class, () -> groupService.updatePatch(groupDto, ID1));
+            verify(groupRepository, times(1)).findById(ID1);
         }
     }
 
@@ -126,12 +125,12 @@ class GroupServiceTest {
         void findById_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-            doReturn(Optional.of(group)).when(groupRepository).findById(UUID.fromString(ID_1));
+            doReturn(Optional.of(group)).when(groupRepository).findById(ID1);
             doReturn(groupDto).when(mapper).toDto(group);
 
-            GroupDto actual = groupService.findById(UUID.fromString(ID_1));
+            GroupDto actual = groupService.findById(ID1);
 
-            verify(groupRepository, times(1)).findById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).findById(ID1);
             verify(mapper, times(1)).toDto(group);
             assertEquals(actual, groupDto);
         }
@@ -142,8 +141,8 @@ class GroupServiceTest {
 
             doReturn(Optional.empty()).when(groupRepository).findById(group.getId());
 
-            assertThrows(NotFoundException.class, () -> groupService.findById(UUID.fromString(ID_1)));
-            verify(groupRepository, times(1)).findById(UUID.fromString(ID_1));
+            assertThrows(NotFoundException.class, () -> groupService.findById(ID1));
+            verify(groupRepository, times(1)).findById(ID1);
         }
 
         @Test
@@ -193,18 +192,18 @@ class GroupServiceTest {
 
         @Test
         void existsById_shouldReturnTrue_whenEntityFoundById() {
-            doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(true).when(groupRepository).existsById(ID1);
 
-            Boolean result = groupService.existsById(UUID.fromString(ID_1));
+            boolean result = groupService.existsById(ID1);
 
             assertTrue(result);
         }
 
         @Test
         void existsById_shouldReturnTrue_whenEntityNotFoundById() {
-            doReturn(false).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(false).when(groupRepository).existsById(ID1);
 
-            Boolean result = groupService.existsById(UUID.fromString(ID_1));
+            boolean result = groupService.existsById(ID1);
 
             assertFalse(result);
         }
@@ -216,32 +215,32 @@ class GroupServiceTest {
 
         @Test
         void deleteById_shouldExecutedOneTime_whenEntityFoundById() {
-            doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
-            doNothing().when(groupRepository).deleteById(UUID.fromString(ID_1));
+            doReturn(true).when(groupRepository).existsById(ID1);
+            doNothing().when(groupRepository).deleteById(ID1);
 
-            groupService.deleteById(UUID.fromString(ID_1));
+            groupService.deleteById(ID1);
 
-            verify(groupRepository, times(1)).deleteById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).deleteById(ID1);
         }
 
         @Test
         void deleteById_shouldThrowNotFoundException_whenEntityNotFoundById() {
-            doReturn(false).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(false).when(groupRepository).existsById(ID1);
 
-            assertThrows(NotFoundException.class, () -> groupService.deleteById(UUID.fromString(ID_1)));
-            verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
-            verify(groupRepository, times(0)).deleteById(UUID.fromString(ID_1));
+            assertThrows(NotFoundException.class, () -> groupService.deleteById(ID1));
+            verify(groupRepository, times(1)).existsById(ID1);
+            verify(groupRepository, times(0)).deleteById(ID1);
           }
 
         @Test
         void delete_shouldExecutedOneTime_whenEntityFoundById() {
             Group group = groupCreate(ID_1, NAME_1);
-            doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(true).when(groupRepository).existsById(ID1);
             doNothing().when(groupRepository).delete(group);
 
             groupService.delete(group);
 
-            verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).existsById(ID1);
             verify(groupRepository, times(1)).delete(group);
         }
 
@@ -249,10 +248,10 @@ class GroupServiceTest {
         void delete_shouldThrowNotFoundException_whenEntityNotFoundById() {
             Group group = groupCreate(ID_1, NAME_1);
 
-            doReturn(false).when(groupRepository).existsById(UUID.fromString(ID_1));
+            doReturn(false).when(groupRepository).existsById(ID1);
 
             assertThrows(NotFoundException.class, () -> groupService.delete(group));
-            verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
+            verify(groupRepository, times(1)).existsById(ID1);
         }
 
         @Test
@@ -269,7 +268,7 @@ class GroupServiceTest {
     void count() {
         long expected = 10;
         doReturn(expected).when(groupRepository).count();
-        
+
         long actual = groupService.count();
 
         verify(groupRepository, times(1)).count();
