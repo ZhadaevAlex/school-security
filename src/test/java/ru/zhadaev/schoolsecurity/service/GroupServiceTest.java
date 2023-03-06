@@ -35,10 +35,8 @@ class GroupServiceTest {
 
     @Mock
     private GroupRepository groupRepository;
-
     @Mock
     private GroupMapper mapper;
-
     @InjectMocks
     private GroupService groupService;
 
@@ -46,7 +44,6 @@ class GroupServiceTest {
     void save_shouldReturnValidGroupDto() {
         GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
         Group group = groupCreate(ID_1, NAME_1);
-
         doReturn(group).when(groupRepository).save(group);
         doReturn(group).when(mapper).toEntity(groupDto);
         doReturn(groupDto).when(mapper).toDto(group);
@@ -66,7 +63,6 @@ class GroupServiceTest {
         void updatePut_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-
             doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
             doReturn(group).when(groupRepository).save(group);
             doReturn(group).when(mapper).toEntity(groupDto);
@@ -95,7 +91,6 @@ class GroupServiceTest {
         void updatePatch_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-
             doReturn(Optional.of(group)).when(groupRepository).findById(UUID.fromString(ID_1));
             doReturn(group).when(groupRepository).save(group);
             doNothing().when(mapper).update(groupDto, group);
@@ -131,7 +126,6 @@ class GroupServiceTest {
         void findById_shouldReturnValidGroupDto_whenEntityFoundById() {
             GroupDto groupDto = groupDtoCreate(ID_1, NAME_1);
             Group group = groupCreate(ID_1, NAME_1);
-
             doReturn(Optional.of(group)).when(groupRepository).findById(UUID.fromString(ID_1));
             doReturn(groupDto).when(mapper).toDto(group);
 
@@ -158,15 +152,12 @@ class GroupServiceTest {
             Integer size = 2;
             Integer numberStudent = 20;
             Pageable pageable = PageRequest.of(pageNumber, size);
-
             List<GroupDto> groupsDto = Arrays.asList(
                     groupDtoCreate(ID_1, NAME_1),
                     groupDtoCreate(ID_2, NAME_2));
-
             List<Group> groups = Arrays.asList(
                     groupCreate(ID_1, NAME_1),
                     groupCreate(ID_2, NAME_2));
-
             doReturn(groups).when(groupRepository).findByNumberStudents(numberStudent, pageable);
             doReturn(groupsDto).when(mapper).toDto(groups);
 
@@ -239,12 +230,12 @@ class GroupServiceTest {
 
             assertThrows(NotFoundException.class, () -> groupService.deleteById(UUID.fromString(ID_1)));
             verify(groupRepository, times(1)).existsById(UUID.fromString(ID_1));
-        }
+            verify(groupRepository, times(0)).deleteById(UUID.fromString(ID_1));
+          }
 
         @Test
         void delete_shouldExecutedOneTime_whenEntityFoundById() {
             Group group = groupCreate(ID_1, NAME_1);
-
             doReturn(true).when(groupRepository).existsById(UUID.fromString(ID_1));
             doNothing().when(groupRepository).delete(group);
 
@@ -278,7 +269,9 @@ class GroupServiceTest {
     void count() {
         long expected = 10;
         doReturn(expected).when(groupRepository).count();
+        
         long actual = groupService.count();
+
         verify(groupRepository, times(1)).count();
         assertEquals(actual, expected);
     }
