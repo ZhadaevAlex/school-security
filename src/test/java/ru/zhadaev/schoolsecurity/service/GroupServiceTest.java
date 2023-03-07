@@ -146,7 +146,7 @@ class GroupServiceTest {
         }
 
         @Test
-        void findAll_numberStudentsIsNotNull() {
+        void findAll_shouldReturnValidListOfGroupDto_whenNumberStudentsIsNotNull() {
             Integer pageNumber = 1;
             Integer size = 2;
             Integer numberStudent = 20;
@@ -166,7 +166,7 @@ class GroupServiceTest {
         }
 
         @Test
-        void findAll_numberStudentsIsNull() {
+        void findAll_shouldReturnValidListOfGroupDto_whenNumberStudentsIsNull() {
             Integer pageNumber = 1;
             Integer size = 2;
             Integer numberStudent = null;
@@ -200,7 +200,7 @@ class GroupServiceTest {
         }
 
         @Test
-        void existsById_shouldReturnTrue_whenEntityNotFoundById() {
+        void existsById_shouldReturnFalse_whenEntityNotFoundById() {
             doReturn(false).when(groupRepository).existsById(ID1);
 
             boolean result = groupService.existsById(ID1);
@@ -255,7 +255,7 @@ class GroupServiceTest {
         }
 
         @Test
-        void deleteAll() {
+        void deleteAll_shouldExecutedOneTime() {
             doNothing().when(groupRepository).deleteAll();
 
             groupService.deleteAll();
@@ -265,7 +265,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void count() {
+    void count_shouldReturnValidValue() {
         long expected = 10;
         doReturn(expected).when(groupRepository).count();
 
