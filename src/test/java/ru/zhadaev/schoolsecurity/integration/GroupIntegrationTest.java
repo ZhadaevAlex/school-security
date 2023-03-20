@@ -17,10 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.zhadaev.schoolsecurity.api.dto.GroupDto;
-
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -80,9 +77,9 @@ public class GroupIntegrationTest {
             String NAME_3 = "TR-49";
             String ID_4 = "8e2e1511-8105-441f-97e8-5bce88c0267a";
             String NAME_4 = "UZ-48";
-            List<GroupDto> expected = Stream.of(
-                    groupDtoCreate(ID_3, NAME_3),
-                    groupDtoCreate(ID_4, NAME_4)).sorted(Comparator.comparing(GroupDto::getName).reversed()).collect(Collectors.toList());
+            List<GroupDto> expected = new LinkedList<>();
+            expected.add(groupDtoCreate(ID_4, NAME_4));
+            expected.add(groupDtoCreate(ID_3, NAME_3));
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("page", "1");

@@ -1,4 +1,5 @@
 create schema school;
+
 create table if not exists school.groups
 (
     group_id   uuid primary key,
