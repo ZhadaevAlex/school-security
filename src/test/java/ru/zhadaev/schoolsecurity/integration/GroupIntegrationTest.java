@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.zhadaev.schoolsecurity.api.dto.GroupDto;
-
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,9 +55,9 @@ public class GroupIntegrationTest {
             String name1 = "OU-60";
             String id2 = "10562d54-0acc-4fbf-baba-98c0aa77a900";
             String name2 = "SV-51";
-            List<GroupDto> expected = Arrays.asList(
-                    groupDtoCreate(id1, name1),
-                    groupDtoCreate(id2, name2));
+            List<GroupDto> expected = new LinkedList<>();
+            expected.add(groupDtoCreate(id1, name1));
+            expected.add(groupDtoCreate(id2, name2));
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("page", "1");
@@ -352,7 +351,6 @@ public class GroupIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "userName", password = "userPassword")
         void findById_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             mockMvc.perform(get("/api/groups/{id}", ID))
                     .andExpect(status().isForbidden());

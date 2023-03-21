@@ -58,9 +58,9 @@ public class CourseIntegrationTest {
             String id2 = "df5b330d-5f6a-4223-8d0b-b71f45636b9f";
             String name2 = "Literature";
             String description2 = "Subject Literature";
-            List<CourseDto> expected = Arrays.asList(
-                    courseDtoCreate(id1, name1, description1),
-                    courseDtoCreate(id2, name2, description2));
+            List<CourseDto> expected = new LinkedList<>();
+            expected.add(courseDtoCreate(id1, name1, description1));
+            expected.add(courseDtoCreate(id2, name2, description2));
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("page", "1");
