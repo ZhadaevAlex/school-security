@@ -5,14 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.zhadaev.schoolsecurity.api.dto.CourseDto;
 import ru.zhadaev.schoolsecurity.api.dto.PermissionDto;
 import ru.zhadaev.schoolsecurity.api.validation.Marker;
 import ru.zhadaev.schoolsecurity.service.PermissionService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,8 +48,7 @@ public class PermissionController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @Validated(Marker.OnPatch.class)
-    public PermissionDto updatePatch(@RequestBody @Valid PermissionDto permissionDto, @PathVariable("id") String id) {
+    public PermissionDto updatePatch(@RequestBody PermissionDto permissionDto, @PathVariable("id") String id) {
         return permissionService.updatePatch(permissionDto, id);
     }
 }
