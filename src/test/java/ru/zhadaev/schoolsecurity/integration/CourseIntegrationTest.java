@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         scripts = {"classpath:schemaDropIntegrationTest.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
 )
-@WithMockUser(username = "adminName", password = "adminPass",
+@WithMockUser(username = "admin", password = "adminPass",
         authorities = {"COURSE_CREATE", "COURSE_READ", "COURSE_UPDATE", "COURSE_DELETE"})
 public class CourseIntegrationTest {
 

@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         scripts = {"classpath:schemaDropIntegrationTest.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
 )
-@WithMockUser(username = "adminName", password = "adminPass",
+@WithMockUser(username = "admin", password = "adminPass",
         authorities = {"STUDENT_CREATE", "STUDENT_READ", "STUDENT_UPDATE", "STUDENT_DELETE"})
 public class StudentIntegrationTest {
 

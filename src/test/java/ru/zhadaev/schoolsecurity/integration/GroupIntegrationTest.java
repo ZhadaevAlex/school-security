@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         scripts = {"classpath:schemaDropIntegrationTest.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
 )
-@WithMockUser(username = "adminName", password = "adminPass",
+@WithMockUser(username = "admin", password = "adminPass",
         authorities = {"GROUP_CREATE", "GROUP_READ", "GROUP_UPDATE", "GROUP_DELETE"})
 public class GroupIntegrationTest {
 
