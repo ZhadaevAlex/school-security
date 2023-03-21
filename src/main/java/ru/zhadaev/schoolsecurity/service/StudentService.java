@@ -44,7 +44,7 @@ public class StudentService {
         StudentDto found = this.findById(id);
         Student student = mapper.toEntity(found);
         mapper.update(studentDto, student);
-        studentRepository.save(student);
+        student = studentRepository.save(student);
         return mapper.toDto(student);
     }
 
