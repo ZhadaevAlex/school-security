@@ -43,7 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PermissionIntegrationTest {
 
     private final String NAME = "GROUP_CREATE";
-    private final String DESCRIPTION = "Endpoint: groups; operation: create";
 
     private final MockMvc mockMvc;
 
@@ -79,9 +78,9 @@ public class PermissionIntegrationTest {
         @Test
         void findAll_shouldReturnFirstPageOfListOfTwoSortedValidPermissionDto() throws Exception {
             String name1 = "USER_DELETE";
-            String description1 = "Endpoint: user; operation: delete";
+            String description1 = "Endpoint: users; operation: delete";
             String name2 = "USER_CREATE";
-            String description2 = "Endpoint: user; operation: create";
+            String description2 = "Endpoint: users; operation: create";
             List<PermissionDto> expected = new LinkedList<>();
             expected.add(permissionDtoCreate(name1, description1));
             expected.add(permissionDtoCreate(name2, description2));
@@ -105,9 +104,10 @@ public class PermissionIntegrationTest {
 
         @Test
         void findById_shouldReturnValidPermissionDto_whenEntityFoundById() throws Exception {
-            PermissionDto expected = permissionDtoCreate(NAME, DESCRIPTION);
+            String descriprion = "Endpoint: groups; operation: create";
+            PermissionDto expected = permissionDtoCreate(NAME, descriprion);
 
-            MvcResult result = mockMvc.perform(get("/api/permissions/{id}", expected.getName()))
+            MvcResult result = mockMvc.perform(get("/api/permissions/{id}", NAME))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -121,9 +121,8 @@ public class PermissionIntegrationTest {
         void findById_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "SCHOOL_CREATE";
             String expectedMsg = "Permission not found by id = " + badId;
-            PermissionDto expected = permissionDtoCreate(badId, DESCRIPTION);
 
-            mockMvc.perform(get("/api/permissions/{id}", expected.getName()))
+            mockMvc.perform(get("/api/permissions/{id}", badId))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$..message").value(expectedMsg));
         }
@@ -136,10 +135,10 @@ public class PermissionIntegrationTest {
         @Test
         void save_shouldReturnValidPermissionDto_whenNameIsValid() throws Exception {
             String savedPermissionName = "SCHOOL_CREATE";
-            PermissionDto savedPermissionDto = new PermissionDto();
-            savedPermissionDto.setName(savedPermissionName);
+            PermissionDto savedPermission = new PermissionDto();
+            savedPermission.setName(savedPermissionName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedPermissionDto);
+            String content = objectMapper.writeValueAsString(savedPermission);
 
             MvcResult result = mockMvc.perform(post("/api/permissions")
                     .contentType("application/json")
@@ -149,25 +148,24 @@ public class PermissionIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             PermissionDto actual = objectMapper.readValue(responseBody, PermissionDto.class);
-            savedPermissionDto.setName(actual.getName());
-            assertEquals(savedPermissionDto, actual);
+            savedPermission.setName(actual.getName());
+            assertEquals(savedPermission, actual);
         }
 
         @Test
         void save_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The permission name must not be null and must contain at least one non-whitespace character";
             String savedPermissionName = " ";
-            PermissionDto savedPermissionDto = new PermissionDto();
-            savedPermissionDto.setName(savedPermissionName);
+            PermissionDto savedPermission = new PermissionDto();
+            savedPermission.setName(savedPermissionName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedPermissionDto);
+            String content = objectMapper.writeValueAsString(savedPermission);
 
             mockMvc.perform(post("/api/permissions")
                     .contentType("application/json")
                     .content(content))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$..message").value(expectedMsg))
-                    .andReturn();
+                    .andExpect(jsonPath("$..message").value(expectedMsg));
         }
     }
 
@@ -178,10 +176,10 @@ public class PermissionIntegrationTest {
         @Test
         void updatePatch_shouldReturnValidPermissionDto_whenEntityFoundById() throws Exception {
             String updatedPermissionDesc = "Endpoint: groups; operation: save";
-            PermissionDto updatedPermissionDto = new PermissionDto();
-            updatedPermissionDto.setDescription(updatedPermissionDesc);
+            PermissionDto updatedPermission = new PermissionDto();
+            updatedPermission.setDescription(updatedPermissionDesc);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedPermissionDto);
+            String content = objectMapper.writeValueAsString(updatedPermission);
 
             MvcResult result = mockMvc.perform(patch("/api/permissions/{id}", NAME)
                     .contentType("application/json")
@@ -191,8 +189,8 @@ public class PermissionIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             PermissionDto actual = objectMapper.readValue(responseBody, PermissionDto.class);
-            updatedPermissionDto.setName(actual.getName());
-            assertEquals(updatedPermissionDto, actual);
+            updatedPermission.setName(actual.getName());
+            assertEquals(updatedPermission, actual);
         }
 
         @Test
@@ -200,10 +198,10 @@ public class PermissionIntegrationTest {
             String badId = "SCHOOL_CREATE";
             String expectedMsg = "Permission not found by id = " + badId;
             String updatedPermissionDesc = "Endpoint: schools; operation: create";
-            PermissionDto updatedPermissionDto = new PermissionDto();
-            updatedPermissionDto.setDescription(updatedPermissionDesc);
+            PermissionDto updatedPermission = new PermissionDto();
+            updatedPermission.setDescription(updatedPermissionDesc);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedPermissionDto);
+            String content = objectMapper.writeValueAsString(updatedPermission);
 
             mockMvc.perform(patch("/api/permissions/{id}", badId)
                     .contentType("application/json")
@@ -259,10 +257,10 @@ public class PermissionIntegrationTest {
         @Test
         void save_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String savedPermissionName = "SCHOOL_CREATE";
-            PermissionDto savedPermissionDto = new PermissionDto();
-            savedPermissionDto.setName(savedPermissionName);
+            PermissionDto savedPermission = new PermissionDto();
+            savedPermission.setName(savedPermissionName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedPermissionDto);
+            String content = objectMapper.writeValueAsString(savedPermission);
 
             mockMvc.perform(post("/api/permissions")
                     .contentType("application/json")
@@ -273,10 +271,10 @@ public class PermissionIntegrationTest {
         @Test
         void updatePatch_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedPermissionDesc = "Endpoint: groups; operation: save";
-            PermissionDto updatedPermissionDto = new PermissionDto();
-            updatedPermissionDto.setDescription(updatedPermissionDesc);
+            PermissionDto updatedPermission = new PermissionDto();
+            updatedPermission.setDescription(updatedPermissionDesc);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedPermissionDto);
+            String content = objectMapper.writeValueAsString(updatedPermission);
 
             mockMvc.perform(patch("/api/permissions/{id}", NAME)
                     .contentType("application/json")

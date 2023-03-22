@@ -26,7 +26,7 @@ public class UserService {
     @PreAuthorize("hasAuthority('USER_CREATE')")
     public UserDto save(UserDto userDto) {
         User user = mapper.toEntity(userDto);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User saved = userRepository.save(user);
         return mapper.toDto(saved);
     }
@@ -38,7 +38,7 @@ public class UserService {
         }
         User user = mapper.toEntity(userDto);
         user.setId(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User replaced = userRepository.save(user);
         return mapper.toDto(replaced);
     }
@@ -48,8 +48,10 @@ public class UserService {
         UserDto found = this.findById(id);
         User user = mapper.toEntity(found);
         mapper.update(userDto, user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        if (userDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
+        user = userRepository.save(user);
         return mapper.toDto(user);
     }
 
