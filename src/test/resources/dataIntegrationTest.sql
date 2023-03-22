@@ -636,14 +636,14 @@ INSERT INTO school.permissions (permission_name, permission_description) VALUES 
 INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_READ', 'Endpoint: students; operation: read');
 INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_UPDATE', 'Endpoint: students; operation: update');
 INSERT INTO school.permissions (permission_name, permission_description) VALUES ('STUDENT_DELETE', 'Endpoint: students; operation: delete');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_CREATE', 'Endpoint: permission; operation: create');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_READ', 'Endpoint: permission; operation: read');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_UPDATE', 'Endpoint: permission; operation: update');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_DELETE', 'Endpoint: permission; operation: delete');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_CREATE', 'Endpoint: user; operation: create');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_READ', 'Endpoint: user; operation: read');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_UPDATE', 'Endpoint: user; operation: update');
-INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_DELETE', 'Endpoint: user; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_CREATE', 'Endpoint: permissions; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_READ', 'Endpoint: permissions; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_UPDATE', 'Endpoint: permissions; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('PERMISSION_DELETE', 'Endpoint: permissions; operation: delete');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_CREATE', 'Endpoint: users; operation: create');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_READ', 'Endpoint: users; operation: read');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_UPDATE', 'Endpoint: users; operation: update');
+INSERT INTO school.permissions (permission_name, permission_description) VALUES ('USER_DELETE', 'Endpoint: users; operation: delete');
 
 -- [ USERS ]
 INSERT INTO school.users (user_id, user_username, user_password) VALUES ('f3f6ab13-61b4-48c0-a65b-b03363116190', 'user', '$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm'); -- userPass

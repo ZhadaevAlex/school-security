@@ -42,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GroupIntegrationTest {
 
     private final String ID = "46fa82ce-4e6d-45ae-a4e4-914971f1eb4f";
-    private final String NAME = "YT-80";
 
     private final MockMvc mockMvc;
 
@@ -136,9 +135,10 @@ public class GroupIntegrationTest {
 
         @Test
         void findById_shouldReturnValidGroupDto_whenEntityFoundById() throws Exception {
-            GroupDto expected = groupDtoCreate(ID, NAME);
+            String name = "YT-80";
+            GroupDto expected = groupDtoCreate(ID, name);
 
-            MvcResult result = mockMvc.perform(get("/api/groups/{id}", expected.getId()))
+            MvcResult result = mockMvc.perform(get("/api/groups/{id}", ID))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -152,9 +152,8 @@ public class GroupIntegrationTest {
         void findById_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Group not found by id = " + badId;
-            GroupDto expected = groupDtoCreate(badId, NAME);
 
-            mockMvc.perform(get("/api/groups/{id}", expected.getId()))
+            mockMvc.perform(get("/api/groups/{id}", badId))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$..message").value(expectedMsg));
         }
@@ -167,10 +166,10 @@ public class GroupIntegrationTest {
         @Test
         void save_shouldReturnValidGroupDto_whenNameIsValid() throws Exception {
             String savedGroupName = "R2-95";
-            GroupDto savedGroupDto = new GroupDto();
-            savedGroupDto.setName(savedGroupName);
+            GroupDto savedGroup = new GroupDto();
+            savedGroup.setName(savedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedGroupDto);
+            String content = objectMapper.writeValueAsString(savedGroup);
 
             MvcResult result = mockMvc.perform(post("/api/groups")
                     .contentType("application/json")
@@ -180,25 +179,24 @@ public class GroupIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             GroupDto actual = objectMapper.readValue(responseBody, GroupDto.class);
-            savedGroupDto.setId(actual.getId());
-            assertEquals(savedGroupDto, actual);
+            savedGroup.setId(actual.getId());
+            assertEquals(savedGroup, actual);
         }
 
         @Test
         void save_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The group name must not be null and must contain at least one non-whitespace character";
             String savedGroupName = " ";
-            GroupDto savedGroupDto = new GroupDto();
-            savedGroupDto.setName(savedGroupName);
+            GroupDto savedGroup = new GroupDto();
+            savedGroup.setName(savedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedGroupDto);
+            String content = objectMapper.writeValueAsString(savedGroup);
 
             mockMvc.perform(post("/api/groups")
                     .contentType("application/json")
                     .content(content))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$..message").value(expectedMsg))
-                    .andReturn();
+                    .andExpect(jsonPath("$..message").value(expectedMsg));
         }
     }
 
@@ -209,10 +207,10 @@ public class GroupIntegrationTest {
         @Test
         void updatePut_shouldReturnValidGroupDto_whenEntityFoundById() throws Exception {
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             MvcResult result = mockMvc.perform(put("/api/groups/{id}", ID)
                     .contentType("application/json")
@@ -222,8 +220,8 @@ public class GroupIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             GroupDto actual = objectMapper.readValue(responseBody, GroupDto.class);
-            updatedGroupDto.setId(actual.getId());
-            assertEquals(updatedGroupDto, actual);
+            updatedGroup.setId(actual.getId());
+            assertEquals(updatedGroup, actual);
         }
 
         @Test
@@ -231,10 +229,10 @@ public class GroupIntegrationTest {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Group replace error. Group not found by id = " + badId;
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(put("/api/groups/{id}", badId)
                     .contentType("application/json")
@@ -247,10 +245,10 @@ public class GroupIntegrationTest {
         void updatePut_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The group name must not be null and must contain at least one non-whitespace character";
             String updatedGroupName = " ";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(put("/api/groups/{id}", ID)
                     .contentType("application/json")
@@ -262,10 +260,10 @@ public class GroupIntegrationTest {
         @Test
         void updatePatch_shouldReturnValidGroupDto_whenEntityFoundById() throws Exception {
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             MvcResult result = mockMvc.perform(patch("/api/groups/{id}", ID)
                     .contentType("application/json")
@@ -275,8 +273,8 @@ public class GroupIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             GroupDto actual = objectMapper.readValue(responseBody, GroupDto.class);
-            updatedGroupDto.setId(actual.getId());
-            assertEquals(updatedGroupDto, actual);
+            updatedGroup.setId(actual.getId());
+            assertEquals(updatedGroup, actual);
         }
 
         @Test
@@ -284,10 +282,10 @@ public class GroupIntegrationTest {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Group not found by id = " + badId;
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(patch("/api/groups/{id}", badId)
                     .contentType("application/json")
@@ -300,10 +298,10 @@ public class GroupIntegrationTest {
         void updatePatch_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The group name must not be null and must contain at least one non-whitespace character";
             String updatedGroupName = " ";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(patch("/api/groups/{id}", ID)
                     .contentType("application/json")
@@ -359,10 +357,10 @@ public class GroupIntegrationTest {
         @Test
         void save_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String savedGroupName = "R2-95";
-            GroupDto savedGroupDto = new GroupDto();
-            savedGroupDto.setName(savedGroupName);
+            GroupDto savedGroup = new GroupDto();
+            savedGroup.setName(savedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedGroupDto);
+            String content = objectMapper.writeValueAsString(savedGroup);
 
             mockMvc.perform(post("/api/groups")
                     .contentType("application/json")
@@ -373,10 +371,10 @@ public class GroupIntegrationTest {
         @Test
         void updatePut_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(put("/api/groups/{id}", ID)
                     .contentType("application/json")
@@ -387,10 +385,10 @@ public class GroupIntegrationTest {
         @Test
         void updatePatch_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedGroupName = "R2-95";
-            GroupDto updatedGroupDto = new GroupDto();
-            updatedGroupDto.setName(updatedGroupName);
+            GroupDto updatedGroup = new GroupDto();
+            updatedGroup.setName(updatedGroupName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedGroupDto);
+            String content = objectMapper.writeValueAsString(updatedGroup);
 
             mockMvc.perform(patch("/api/groups/{id}", ID)
                     .contentType("application/json")

@@ -257,7 +257,7 @@ public class StudentIntegrationTest {
                     ))
             );
 
-            MvcResult result = mockMvc.perform(get("/api/students/{id}", expected.getId()))
+            MvcResult result = mockMvc.perform(get("/api/students/{id}", ID))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -271,16 +271,8 @@ public class StudentIntegrationTest {
         void findById_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Student not found by id = " + badId;
-            StudentDto expected = studentDtoCreate(badId, FIRST_NAME, LAST_NAME,
-                    groupDtoCreate(GROUP_ID, GROUP_NAME),
-                    new HashSet<>(Arrays.asList(
-                            courseDtoCreate(COURSE_ID_1, COURSE_NAME_1, COURSE_DESCRIPTION_1),
-                            courseDtoCreate(COURSE_ID_2, COURSE_NAME_2, COURSE_DESCRIPTION_2),
-                            courseDtoCreate(COURSE_ID_3, COURSE_NAME_3, COURSE_DESCRIPTION_3)
-                    ))
-            );
 
-            mockMvc.perform(get("/api/students/{id}", expected.getId()))
+            mockMvc.perform(get("/api/students/{id}", badId))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$..message").value(expectedMsg));
         }
@@ -292,20 +284,19 @@ public class StudentIntegrationTest {
 
         @Test
         void save_shouldReturnValidStudentDto_whenNameIsValid() throws Exception {
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(FIRST_NAME);
-            expected.setLastName(LAST_NAME);
-            expected.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
-            expected.setCourses(
+            StudentDto savedStudent = new StudentDto();
+            savedStudent.setFirstName(FIRST_NAME);
+            savedStudent.setLastName(LAST_NAME);
+            savedStudent.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
+            savedStudent.setCourses(
                     new HashSet<>(Arrays.asList(
                             courseDtoCreate(COURSE_ID_1, COURSE_NAME_1, COURSE_DESCRIPTION_1),
                             courseDtoCreate(COURSE_ID_2, COURSE_NAME_2, COURSE_DESCRIPTION_2),
                             courseDtoCreate(COURSE_ID_3, COURSE_NAME_3, COURSE_DESCRIPTION_3)
                     ))
             );
-
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(savedStudent);
 
             MvcResult result = mockMvc.perform(post("/api/students")
                     .contentType("application/json")
@@ -315,19 +306,19 @@ public class StudentIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             StudentDto actual = objectMapper.readValue(responseBody, StudentDto.class);
-            expected.setId(actual.getId());
-            assertEquals(expected, actual);
+            savedStudent.setId(actual.getId());
+            assertEquals(savedStudent, actual);
         }
 
         @Test
         void save_shouldReturnValidError_whenNameIsNotValidAndOneCharacter() throws Exception {
             String expectedMsg = "The student's first name must consist of at least two characters";
             String savedStudentFirstName = "A";
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(savedStudentFirstName);
-            expected.setLastName(LAST_NAME);
-            expected.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
-            expected.setCourses(
+            StudentDto savedStudent = new StudentDto();
+            savedStudent.setFirstName(savedStudentFirstName);
+            savedStudent.setLastName(LAST_NAME);
+            savedStudent.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
+            savedStudent.setCourses(
                     new HashSet<>(Arrays.asList(
                             courseDtoCreate(COURSE_ID_1, COURSE_NAME_1, COURSE_DESCRIPTION_1),
                             courseDtoCreate(COURSE_ID_2, COURSE_NAME_2, COURSE_DESCRIPTION_2),
@@ -335,25 +326,24 @@ public class StudentIntegrationTest {
                     ))
             );
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(savedStudent);
 
             mockMvc.perform(post("/api/students")
                     .contentType("application/json")
                     .content(content))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$..message").value(expectedMsg))
-                    .andReturn();
+                    .andExpect(jsonPath("$..message").value(expectedMsg));
         }
 
         @Test
         void save_shouldReturnValidError_whenNameIsNotValidAndWhitespace() throws Exception {
             String expectedMsg = "The student's first name must not be null and must contain at least one non-whitespace character";
             String savedStudentFirstName = "  ";
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(savedStudentFirstName);
-            expected.setLastName(LAST_NAME);
-            expected.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
-            expected.setCourses(
+            StudentDto savedStudent = new StudentDto();
+            savedStudent.setFirstName(savedStudentFirstName);
+            savedStudent.setLastName(LAST_NAME);
+            savedStudent.setGroup(groupDtoCreate(GROUP_ID, GROUP_NAME));
+            savedStudent.setCourses(
                     new HashSet<>(Arrays.asList(
                             courseDtoCreate(COURSE_ID_1, COURSE_NAME_1, COURSE_DESCRIPTION_1),
                             courseDtoCreate(COURSE_ID_2, COURSE_NAME_2, COURSE_DESCRIPTION_2),
@@ -361,14 +351,13 @@ public class StudentIntegrationTest {
                     ))
             );
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(savedStudent);
 
             mockMvc.perform(post("/api/students")
                     .contentType("application/json")
                     .content(content))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$..message").value(expectedMsg))
-                    .andReturn();
+                    .andExpect(jsonPath("$..message").value(expectedMsg));
         }
     }
 
@@ -378,16 +367,16 @@ public class StudentIntegrationTest {
 
         @Test
         void updatePut_shouldReturnValidStudentDto_whenEntityFoundById() throws Exception {
-            String expectedFirstName = "Ivan";
-            String expectedLastName = "Ivanov";
-            String expectedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
-            String expectedGroupName = "BA-51";
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(expectedFirstName);
-            expected.setLastName(expectedLastName);
-            expected.setGroup(groupDtoCreate(expectedGroupId, expectedGroupName));
+            String updatedFirstName = "Ivan";
+            String updatedLastName = "Ivanov";
+            String updatedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
+            String updatedGroupName = "BA-51";
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedFirstName);
+            updatedStudent.setLastName(updatedLastName);
+            updatedStudent.setGroup(groupDtoCreate(updatedGroupId, updatedGroupName));
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             MvcResult result = mockMvc.perform(put("/api/students/{id}", ID)
                     .contentType("application/json")
@@ -397,24 +386,24 @@ public class StudentIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             StudentDto actual = objectMapper.readValue(responseBody, StudentDto.class);
-            expected.setId(actual.getId());
-            assertEquals(expected, actual);
+            updatedStudent.setId(actual.getId());
+            assertEquals(updatedStudent, actual);
         }
 
         @Test
         void updatePut_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Student replace error. Student not found by id = " + badId;
-            String expectedFirstName = "Ivan";
-            String expectedLastName = "Ivanov";
-            String expectedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
-            String expectedGroupName = "BA-51";
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(expectedFirstName);
-            expected.setLastName(expectedLastName);
-            expected.setGroup(groupDtoCreate(expectedGroupId, expectedGroupName));
+            String updatedFirstName = "Ivan";
+            String updatedLastName = "Ivanov";
+            String updatedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
+            String updatedGroupName = "BA-51";
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedFirstName);
+            updatedStudent.setLastName(updatedLastName);
+            updatedStudent.setGroup(groupDtoCreate(updatedGroupId, updatedGroupName));
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(put("/api/students/{id}", badId)
                     .contentType("application/json")
@@ -426,16 +415,16 @@ public class StudentIntegrationTest {
         @Test
         void updatePut_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The student's first name must not be null and must contain at least one non-whitespace character";
-            String expectedFirstName = "  ";
-            String expectedLastName = "Ivanov";
-            String expectedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
-            String expectedGroupName = "BA-51";
-            StudentDto expected = new StudentDto();
-            expected.setFirstName(expectedFirstName);
-            expected.setLastName(expectedLastName);
-            expected.setGroup(groupDtoCreate(expectedGroupId, expectedGroupName));
+            String updatedFirstName = "  ";
+            String updatedLastName = "Ivanov";
+            String updatedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
+            String updatedGroupName = "BA-51";
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedFirstName);
+            updatedStudent.setLastName(updatedLastName);
+            updatedStudent.setGroup(groupDtoCreate(updatedGroupId, updatedGroupName));
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(expected);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(put("/api/students/{id}", ID)
                     .contentType("application/json")
@@ -448,12 +437,12 @@ public class StudentIntegrationTest {
         void updatePatch_shouldReturnValidStudentDto_whenEntityFoundByIdAndUpdateGroup() throws Exception {
             String updatedGroupId = "408a9358-c6b1-4b36-8912-7bbd4803f1b1";
             String updatedGroupName = "BA-51";
-            StudentDto updatedStudentDto = new StudentDto();
+            StudentDto updatedStudent = new StudentDto();
             GroupDto updatedGroup = new GroupDto();
             updatedGroup.setId(UUID.fromString(updatedGroupId));
-            updatedStudentDto.setGroup(updatedGroup);
+            updatedStudent.setGroup(updatedGroup);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             StudentDto expected = studentDtoCreate(ID, FIRST_NAME, LAST_NAME,
                     groupDtoCreate(updatedGroupId, updatedGroupName),
@@ -472,7 +461,6 @@ public class StudentIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             StudentDto actual = objectMapper.readValue(responseBody, StudentDto.class);
-            updatedStudentDto.setId(actual.getId());
             assertEquals(expected, actual);
         }
 
@@ -491,10 +479,10 @@ public class StudentIntegrationTest {
             Set<CourseDto> updatedCourses = new HashSet<>();
             updatedCourses.add(updatedCourse1);
             updatedCourses.add(updatedCourse2);
-            StudentDto updatedStudentDto = new StudentDto();
-            updatedStudentDto.setCourses(updatedCourses);
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setCourses(updatedCourses);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             StudentDto expected = studentDtoCreate(ID, FIRST_NAME, LAST_NAME,
                     groupDtoCreate(GROUP_ID, GROUP_NAME),
@@ -512,7 +500,6 @@ public class StudentIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             StudentDto actual = objectMapper.readValue(responseBody, StudentDto.class);
-            updatedStudentDto.setId(actual.getId());
             assertEquals(expected, actual);
         }
 
@@ -520,9 +507,9 @@ public class StudentIntegrationTest {
         void updatePatch_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Student not found by id = " + badId;
-            StudentDto updatedStudentDto = new StudentDto();
+            StudentDto updatedStudent = new StudentDto();
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(patch("/api/students/{id}", badId)
                     .contentType("application/json")
@@ -535,10 +522,10 @@ public class StudentIntegrationTest {
         void updatePatch_shouldReturnValidError_whenNameIsNotValidAndWhitespace() throws Exception {
             String expectedMsg = "The student's first name must contain at least one non-whitespace character. Can be null";
             String updatedStudentFirstName = "  ";
-            StudentDto updatedStudentDto = new StudentDto();
-            updatedStudentDto.setFirstName(updatedStudentFirstName);
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedStudentFirstName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(patch("/api/students/{id}", ID)
                     .contentType("application/json")
@@ -595,11 +582,11 @@ public class StudentIntegrationTest {
         void save_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String savedStudentFirstName = "Ivan";
             String savedStudentLastName = "Ivanov";
-            StudentDto savedStudentDto = new StudentDto();
-            savedStudentDto.setFirstName(savedStudentFirstName);
-            savedStudentDto.setLastName(savedStudentLastName);
+            StudentDto savedStudent = new StudentDto();
+            savedStudent.setFirstName(savedStudentFirstName);
+            savedStudent.setLastName(savedStudentLastName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedStudentDto);
+            String content = objectMapper.writeValueAsString(savedStudent);
 
             mockMvc.perform(post("/api/students")
                     .contentType("application/json")
@@ -611,11 +598,11 @@ public class StudentIntegrationTest {
         void updatePut_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedStudentFirstName = "Ivan";
             String updatedStudentLastName = "Ivanov";
-            StudentDto updatedStudentDto = new StudentDto();
-            updatedStudentDto.setFirstName(updatedStudentFirstName);
-            updatedStudentDto.setLastName(updatedStudentLastName);
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedStudentFirstName);
+            updatedStudent.setLastName(updatedStudentLastName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(put("/api/students/{id}", ID)
                     .contentType("application/json")
@@ -626,10 +613,10 @@ public class StudentIntegrationTest {
         @Test
         void updatePatch_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedStudentName = "Ivan";
-            StudentDto updatedStudentDto = new StudentDto();
-            updatedStudentDto.setFirstName(updatedStudentName);
+            StudentDto updatedStudent = new StudentDto();
+            updatedStudent.setFirstName(updatedStudentName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedStudentDto);
+            String content = objectMapper.writeValueAsString(updatedStudent);
 
             mockMvc.perform(patch("/api/students/{id}", ID)
                     .contentType("application/json")

@@ -42,8 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CourseIntegrationTest {
 
     private final String ID = "1a94740f-cab8-4522-91fa-ad996c72b92d";
-    private final String NAME = "Computer science";
-    private final String DESCRIPTION = "Subject Computer science";
 
     private final MockMvc mockMvc;
 
@@ -109,9 +107,11 @@ public class CourseIntegrationTest {
 
         @Test
         void findById_shouldReturnValidCourseDto_whenEntityFoundById() throws Exception {
-            CourseDto expected = courseDtoCreate(ID, NAME, DESCRIPTION);
+            String name = "Computer science";
+            String description = "Subject Computer science";
+            CourseDto expected = courseDtoCreate(ID, name, description);
 
-            MvcResult result = mockMvc.perform(get("/api/courses/{id}", expected.getId()))
+            MvcResult result = mockMvc.perform(get("/api/courses/{id}", ID))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -125,9 +125,8 @@ public class CourseIntegrationTest {
         void findById_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Course not found by id = " + badId;
-            CourseDto expected = courseDtoCreate(badId, NAME, DESCRIPTION);
 
-            mockMvc.perform(get("/api/courses/{id}", expected.getId()))
+            mockMvc.perform(get("/api/courses/{id}", badId))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$..message").value(expectedMsg));
         }
@@ -140,10 +139,10 @@ public class CourseIntegrationTest {
         @Test
         void save_shouldReturnValidCourseDto_whenNameIsValid() throws Exception {
             String savedCourseName = "Physics";
-            CourseDto savedCourseDto = new CourseDto();
-            savedCourseDto.setName(savedCourseName);
+            CourseDto savedCourse = new CourseDto();
+            savedCourse.setName(savedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedCourseDto);
+            String content = objectMapper.writeValueAsString(savedCourse);
 
             MvcResult result = mockMvc.perform(post("/api/courses")
                     .contentType("application/json")
@@ -153,25 +152,24 @@ public class CourseIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             CourseDto actual = objectMapper.readValue(responseBody, CourseDto.class);
-            savedCourseDto.setId(actual.getId());
-            assertEquals(savedCourseDto, actual);
+            savedCourse.setId(actual.getId());
+            assertEquals(savedCourse, actual);
         }
 
         @Test
         void save_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The course name must not be null and must contain at least one non-whitespace character";
             String savedCourseName = " ";
-            CourseDto savedCourseDto = new CourseDto();
-            savedCourseDto.setName(savedCourseName);
+            CourseDto savedCourse = new CourseDto();
+            savedCourse.setName(savedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedCourseDto);
+            String content = objectMapper.writeValueAsString(savedCourse);
 
             mockMvc.perform(post("/api/courses")
                     .contentType("application/json")
                     .content(content))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$..message").value(expectedMsg))
-                    .andReturn();
+                    .andExpect(jsonPath("$..message").value(expectedMsg));
         }
     }
 
@@ -182,10 +180,10 @@ public class CourseIntegrationTest {
         @Test
         void updatePut_shouldReturnValidCourseDto_whenEntityFoundById() throws Exception {
             String updatedCourseName = "Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             MvcResult result = mockMvc.perform(put("/api/courses/{id}", ID)
                     .contentType("application/json")
@@ -195,8 +193,8 @@ public class CourseIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             CourseDto actual = objectMapper.readValue(responseBody, CourseDto.class);
-            updatedCourseDto.setId(actual.getId());
-            assertEquals(updatedCourseDto, actual);
+            updatedCourse.setId(actual.getId());
+            assertEquals(updatedCourse, actual);
         }
 
         @Test
@@ -204,10 +202,10 @@ public class CourseIntegrationTest {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "Course replace error. Course not found by id = " + badId;
             String updatedCourseName = "Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(put("/api/courses/{id}", badId)
                     .contentType("application/json")
@@ -220,10 +218,10 @@ public class CourseIntegrationTest {
         void updatePut_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The course name must not be null and must contain at least one non-whitespace character";
             String updatedCourseName = " ";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(put("/api/courses/{id}", ID)
                     .contentType("application/json")
@@ -236,11 +234,11 @@ public class CourseIntegrationTest {
         void updatePatch_shouldReturnValidCourseDto_whenEntityFoundById() throws Exception {
             String updatedCourseName = "Physics";
             String updatedCourseDesc = "Subject Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
-            updatedCourseDto.setDescription(updatedCourseDesc);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
+            updatedCourse.setDescription(updatedCourseDesc);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             MvcResult result = mockMvc.perform(patch("/api/courses/{id}", ID)
                     .contentType("application/json")
@@ -250,8 +248,8 @@ public class CourseIntegrationTest {
 
             String responseBody = result.getResponse().getContentAsString();
             CourseDto actual = objectMapper.readValue(responseBody, CourseDto.class);
-            updatedCourseDto.setId(actual.getId());
-            assertEquals(updatedCourseDto, actual);
+            updatedCourse.setId(actual.getId());
+            assertEquals(updatedCourse, actual);
         }
 
         @Test
@@ -260,11 +258,11 @@ public class CourseIntegrationTest {
             String expectedMsg = "Course not found by id = " + badId;
             String updatedCourseName = "Physics";
             String updatedCourseDesc = "Subject Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
-            updatedCourseDto.setDescription(updatedCourseDesc);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
+            updatedCourse.setDescription(updatedCourseDesc);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(patch("/api/courses/{id}", badId)
                     .contentType("application/json")
@@ -277,10 +275,10 @@ public class CourseIntegrationTest {
         void updatePatch_shouldReturnValidError_whenNameIsNotValid() throws Exception {
             String expectedMsg = "The course name must contain at least one non-whitespace character. Can be null";
             String updatedCourseName = " ";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(patch("/api/courses/{id}", ID)
                     .contentType("application/json")
@@ -336,10 +334,10 @@ public class CourseIntegrationTest {
         @Test
         void save_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String savedCourseName = "Physics";
-            CourseDto savedCourseDto = new CourseDto();
-            savedCourseDto.setName(savedCourseName);
+            CourseDto savedCourse = new CourseDto();
+            savedCourse.setName(savedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(savedCourseDto);
+            String content = objectMapper.writeValueAsString(savedCourse);
 
             mockMvc.perform(post("/api/courses")
                     .contentType("application/json")
@@ -350,10 +348,10 @@ public class CourseIntegrationTest {
         @Test
         void updatePut_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedCourseName = "Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(put("/api/courses/{id}", ID)
                     .contentType("application/json")
@@ -364,10 +362,10 @@ public class CourseIntegrationTest {
         @Test
         void updatePatch_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
             String updatedCourseName = "Physics";
-            CourseDto updatedCourseDto = new CourseDto();
-            updatedCourseDto.setName(updatedCourseName);
+            CourseDto updatedCourse = new CourseDto();
+            updatedCourse.setName(updatedCourseName);
             ObjectMapper objectMapper = new ObjectMapper();
-            String content = objectMapper.writeValueAsString(updatedCourseDto);
+            String content = objectMapper.writeValueAsString(updatedCourse);
 
             mockMvc.perform(patch("/api/courses/{id}", ID)
                     .contentType("application/json")
