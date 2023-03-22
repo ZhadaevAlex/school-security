@@ -54,7 +54,7 @@ create table if not exists school.permissions
 create table if not exists school.users
 (
     user_id       uuid primary key,
-    user_username varchar(255) null,
+    user_login varchar(255) null,
     user_password varchar(255) null,
     permission_name varchar(255) null,
     foreign key (permission_name) references school.permissions (permission_name) on delete set null

@@ -13,10 +13,10 @@ public class UserDto {
     private UUID id;
 
     @PatchValidation(groups = Marker.OnPatch.class,
-            message = "The user's name must contain at least one non-whitespace character. Can be null")
+            message = "The user's login must contain at least one non-whitespace character. Can be null")
     @NotBlank(groups = Marker.OnPostPut.class,
-            message = "The user's name must not be null and must contain at least one non-whitespace character")
-    private String username;
+            message = "The user's login must not be null and must contain at least one non-whitespace character")
+    private String login;
 
     @PatchValidation(groups = Marker.OnPatch.class,
             message = "The user's password must contain at least one non-whitespace character. Can be null")
