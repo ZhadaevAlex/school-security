@@ -67,16 +67,16 @@ public class UserIntegrationTest {
         @Test
         void findAll_shouldReturnZeroPageOfListOfTwoValidUserDto() throws Exception {
             String id1 = "f3f6ab13-61b4-48c0-a65b-b03363116190";
-            String username1 = "user";
+            String login1 = "user";
             String password1 = "$2a$12$qh9xaN766tGARzNL0xOrAuBRF0ZkPMMkvdtKS.NMVCwxOItQv9MLm";
             Set<PermissionDto> permissions1 = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate("COURSE_READ", "Endpoint: courses; operation: read"),
                     permissionDtoCreate("GROUP_READ", "Endpoint: groups; operation: read"),
                     permissionDtoCreate("STUDENT_READ", "Endpoint: students; operation: read")));
-            UserDto user1 = userDtoCreate(id1, username1, password1, permissions1);
+            UserDto user1 = userDtoCreate(id1, login1, password1, permissions1);
 
             String id2 = "17b5254a-e96e-4e85-a6d3-6f2a4b68f16c";
-            String username2 = "teacher";
+            String login2 = "teacher";
             String password2 = "$2a$12$XWOgJwQlqcjShcivTEGztOoRrE.9WsQBKBUVECj/mW2yBGjv0VgUi";
             Set<PermissionDto> permissions2 = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate("COURSE_READ", "Endpoint: courses; operation: read"),
@@ -88,7 +88,7 @@ public class UserIntegrationTest {
                     permissionDtoCreate("COURSE_CREATE", "Endpoint: courses; operation: create"),
                     permissionDtoCreate("COURSE_UPDATE", "Endpoint: courses; operation: update"),
                     permissionDtoCreate("STUDENT_READ", "Endpoint: students; operation: read")));
-            UserDto user2 = userDtoCreate(id2, username2, password2, permissions2);
+            UserDto user2 = userDtoCreate(id2, login2, password2, permissions2);
 
             List<UserDto> expected = new LinkedList<>();
             expected.add(user1);
@@ -97,7 +97,7 @@ public class UserIntegrationTest {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("page", "0");
             params.add("size", "2");
-            params.add("sort", "username,desc");
+            params.add("sort", "login,desc");
 
             MvcResult result = mockMvc.perform(get("/api/users")
                     .params(params))
@@ -146,10 +146,10 @@ public class UserIntegrationTest {
     class CreateTest {
 
         @Test
-        void save_shouldReturnValidUserDto_whenUsernameIsValid() throws Exception {
-            String savedUsername = "user2";
+        void save_shouldReturnValidUserDto_whenLoginIsValid() throws Exception {
+            String savedLogin = "user2";
             UserDto savedUser = new UserDto();
-            savedUser.setUsername(savedUsername);
+            savedUser.setLogin(savedLogin);
             savedUser.setPassword(RAW_PASSWORD);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -174,11 +174,11 @@ public class UserIntegrationTest {
         }
 
         @Test
-        void save_shouldReturnValidError_whenUsernameIsNotValidAndWhitespace() throws Exception {
-            String expectedMsg = "The user's name must not be null and must contain at least one non-whitespace character";
-            String savedUsername = "  ";
+        void save_shouldReturnValidError_whenLoginIsNotValidAndWhitespace() throws Exception {
+            String expectedMsg = "The user's login must not be null and must contain at least one non-whitespace character";
+            String savedLogin = "  ";
             UserDto savedUser = new UserDto();
-            savedUser.setUsername(savedUsername);
+            savedUser.setLogin(savedLogin);
             savedUser.setPassword(RAW_PASSWORD);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -201,7 +201,7 @@ public class UserIntegrationTest {
             String expectedMsg = "The user's password must not be null and must contain at least one non-whitespace character";
             String savedPassword = "  ";
             UserDto savedUser = new UserDto();
-            savedUser.setUsername(USERNAME);
+            savedUser.setLogin(USERNAME);
             savedUser.setPassword(savedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -221,9 +221,9 @@ public class UserIntegrationTest {
         @Test
         void save_shouldReturnValidError_whenPermissionsIsNotValidAndNull() throws Exception {
             String expectedMsg = "The user's permissions must be not null";
-            String savedUsername = "user2";
+            String savedLogin = "user2";
             UserDto savedUser = new UserDto();
-            savedUser.setUsername(savedUsername);
+            savedUser.setLogin(savedLogin);
             savedUser.setPassword(RAW_PASSWORD);
             savedUser.setPermissions(null);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -243,10 +243,10 @@ public class UserIntegrationTest {
 
         @Test
         void updatePut_shouldReturnValidUserDto_whenEntityFoundById() throws Exception {
-            String updatedUsername = "user3";
+            String updatedLogin = "user3";
             String updatedPassword = "userPass";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(updatedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -274,10 +274,10 @@ public class UserIntegrationTest {
         void updatePut_shouldReturnNotFoundError_whenEntityNotFoundById() throws Exception {
             String badId = "8e2e1511-8105-441f-97e8-5bce88c0267b";
             String expectedMsg = "User replace error. User not found by id = " + badId;
-            String updatedUsername = "user3";
+            String updatedLogin = "user3";
             String updatedPassword = "userPass";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(updatedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -295,12 +295,12 @@ public class UserIntegrationTest {
         }
 
         @Test
-        void updatePut_shouldReturnValidError_whenUsernameIsNotValidAndWhitespace() throws Exception {
-            String expectedMsg = "The user's name must not be null and must contain at least one non-whitespace character";
-            String updatedUsername = "  ";
+        void updatePut_shouldReturnValidError_whenLoginIsNotValidAndWhitespace() throws Exception {
+            String expectedMsg = "The user's login must not be null and must contain at least one non-whitespace character";
+            String updatedLogin = "  ";
             String updatedPassword = "userPass";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(updatedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -320,10 +320,10 @@ public class UserIntegrationTest {
         @Test
         void updatePut_shouldReturnValidError_whenPasswordIsNotValidAndWhitespace() throws Exception {
             String expectedMsg = "The user's password must not be null and must contain at least one non-whitespace character";
-            String updatedUsername = "user2";
+            String updatedLogin = "user2";
             String updatedPassword = "  ";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(updatedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -343,9 +343,9 @@ public class UserIntegrationTest {
         @Test
         void updatePut_shouldReturnValidError_whenPermissionsIsNotValidAndNull() throws Exception {
             String expectedMsg = "The user's permissions must be not null";
-            String updatedUsername = "user2";
+            String updatedLogin = "user2";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(RAW_PASSWORD);
             updatedUser.setPermissions(null);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -431,11 +431,11 @@ public class UserIntegrationTest {
         }
 
         @Test
-        void updatePatch_shouldReturnValidError_whenUsernameIsNotValidAndWhitespace() throws Exception {
-            String expectedMsg = "The user's name must contain at least one non-whitespace character. Can be null";
-            String updatedUsername = "  ";
+        void updatePatch_shouldReturnValidError_whenLoginIsNotValidAndWhitespace() throws Exception {
+            String expectedMsg = "The user's login must contain at least one non-whitespace character. Can be null";
+            String updatedLogin = "  ";
             UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setUsername(updatedUsername);
+            updatedUserDto.setLogin(updatedLogin);
             ObjectMapper objectMapper = new ObjectMapper();
             String content = objectMapper.writeValueAsString(updatedUserDto);
 
@@ -508,9 +508,9 @@ public class UserIntegrationTest {
 
         @Test
         void save_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
-            String savedUsername = "user2";
+            String savedLogin = "user2";
             UserDto savedUser = new UserDto();
-            savedUser.setUsername(savedUsername);
+            savedUser.setLogin(savedLogin);
             savedUser.setPassword(RAW_PASSWORD);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -528,10 +528,10 @@ public class UserIntegrationTest {
 
         @Test
         void updatePut_shouldReturnForbiddenError_WhenIsNoPermission() throws Exception {
-            String updatedUsername = "user3";
+            String updatedLogin = "user3";
             String updatedPassword = "userPass";
             UserDto updatedUser = new UserDto();
-            updatedUser.setUsername(updatedUsername);
+            updatedUser.setLogin(updatedLogin);
             updatedUser.setPassword(updatedPassword);
             Set<PermissionDto> permissions = new LinkedHashSet<>(Arrays.asList(
                     permissionDtoCreate(PERMISSION_NAME_1, PERMISSION_DESCRIPTION_1),
@@ -581,10 +581,10 @@ public class UserIntegrationTest {
         return permissionDto;
     }
 
-    private UserDto userDtoCreate(String id, String username, String password, Set<PermissionDto> permissions) {
+    private UserDto userDtoCreate(String id, String login, String password, Set<PermissionDto> permissions) {
         UserDto userDto = new UserDto();
         userDto.setId(UUID.fromString(id));
-        userDto.setUsername(username);
+        userDto.setLogin(login);
         userDto.setPassword(password);
         userDto.setPermissions(permissions);
         return userDto;
