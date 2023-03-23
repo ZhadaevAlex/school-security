@@ -10,9 +10,11 @@ import ru.zhadaev.schoolsecurity.api.dto.UserDto;
 import ru.zhadaev.schoolsecurity.api.mappers.UserMapper;
 import ru.zhadaev.schoolsecurity.dao.entities.User;
 import ru.zhadaev.schoolsecurity.dao.repositories.UserRepository;
+import ru.zhadaev.schoolsecurity.exception.AlreadyExistsException;
 import ru.zhadaev.schoolsecurity.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,6 +27,9 @@ public class UserService {
 
     @PreAuthorize("hasAuthority('USER_CREATE')")
     public UserDto save(UserDto userDto) {
+        if (this.findByLogin(userDto.getLogin())) {
+            throw new AlreadyExistsException(String.format("A user with the login '%s' already exists", userDto.getLogin()));
+        }
         User user = mapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User saved = userRepository.save(user);
@@ -97,5 +102,10 @@ public class UserService {
     @PreAuthorize("hasAuthority('USER_DELETE')")
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    private boolean findByLogin(String login) {
+        Optional<User> user = userRepository.findByLogin(login);
+        return user.isPresent();
     }
 }
