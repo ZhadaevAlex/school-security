@@ -1,14 +1,13 @@
 # school-springdata
-Create an application sql-jdbc-school that inserts/updates/deletes data in the database using:
+Create an application that inserts/updates/deletes data in the database using:
 - Spring Boot
 - Spring Data
-- REST
 - Spring Security
+- REST
 
 Additionally use:
 - Validation
 - Lombok
-- Mapstruct
 - Open API
 - AOP for logging
 
