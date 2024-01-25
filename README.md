@@ -1,4 +1,4 @@
-# school-springdata
+# school-spring-data-security
 Create an application that inserts/updates/deletes data in the database using:
 - Spring Boot
 - Spring Data
